@@ -1,0 +1,44 @@
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Editor & IDE Directories
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Node.js (se usar npx serve, npm, etc.)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# Python (se usar python -m http.server)
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Environment & Secrets
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+secrets.json
+
+# Build & Dist
+dist/
+build/
+
+# Local Server / Temp Files
+.DS_Store
+*.log
+tmp/
+temp/
+
+# Others
+setup.sh

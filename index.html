@@ -1,1 +1,390 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>XNAJA – Jogo da Cobrinha Online Grátis (Snake)</title>
+<meta name="description" content="Jogue XNAJA, o jogo da cobrinha (snake) online e grátis. Arraste o dedo no celular ou use as setas no PC, coma estrelas, suba de nível e desvie de obstáculos.">
+<meta name="keywords" content="xnaja, jogo da cobrinha, jogo da cobra, snake, snake online, jogo da naja, jogo de celular, jogo arcade, jogo grátis, jogo online grátis, cobrinha com estrelas, jogo html5, snake game">
+<meta name="author" content="XNAJA">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="googlebot" content="index, follow">
+<meta name="application-name" content="XNAJA">
+<meta name="apple-mobile-web-app-title" content="XNAJA">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="format-detection" content="telephone=no">
+<meta name="theme-color" content="#000000">
+<meta name="color-scheme" content="dark">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 
+<link rel="canonical" id="canonicalLink" href="">
+<link rel="alternate" hreflang="pt-BR" id="hreflangPt" href="">
+<link rel="alternate" hreflang="x-default" id="hreflangX" href="">
+<meta property="og:url" id="ogUrl" content="">
+<meta property="og:image" id="ogImage" content="">
+<meta property="og:image:secure_url" id="ogImageSecure" content="">
+<meta name="twitter:image" id="twitterImage" content="">
+
+<link rel="icon" href="source/assets/icon.svg" type="image/svg+xml">
+<link rel="icon" href="source/assets/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="source/assets/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="XNAJA">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="XNAJA – Jogo da Cobrinha Online Grátis (Snake)">
+<meta property="og:description" content="Jogue XNAJA, o jogo da cobrinha (snake) online e grátis. Arraste o dedo no celular ou use as setas no PC, coma estrelas, suba de nível e desvie de obstáculos.">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="XNAJA: cobrinha verde-menta perseguindo uma estrela amarela, com o logo de uma naja">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="XNAJA – Jogo da Cobrinha Online Grátis (Snake)">
+<meta name="twitter:description" content="Jogue XNAJA, o jogo da cobrinha (snake) online e grátis. Arraste o dedo no celular ou use as setas no PC, coma estrelas, suba de nível e desvie de obstáculos.">
+<meta name="twitter:image:alt" content="XNAJA: cobrinha verde-menta perseguindo uma estrela amarela, com o logo de uma naja">
+
+<script>
+  (function() {
+    const baseUrl = window.location.origin + window.location.pathname.replace(/\/index\.html$/, '/');
+    const imageUrl = baseUrl + 'source/assets/og-banner.png';
+    
+    document.getElementById('canonicalLink').href = baseUrl;
+    document.getElementById('hreflangPt').href = baseUrl;
+    document.getElementById('hreflangX').href = baseUrl;
+    document.getElementById('ogUrl').content = baseUrl;
+    document.getElementById('ogImage').content = imageUrl;
+    document.getElementById('ogImageSecure').content = imageUrl;
+    document.getElementById('twitterImage').content = imageUrl;
+
+    const schema = {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": baseUrl + "#website",
+          "url": baseUrl,
+          "name": "XNAJA",
+          "description": "Jogue XNAJA, o jogo da cobrinha (snake) online e grátis. Arraste o dedo no celular ou use as setas no PC, coma estrelas, suba de nível e desvie de obstáculos.",
+          "inLanguage": "pt-BR",
+          "publisher": { "@id": baseUrl + "#organization" }
+        },
+        {
+          "@type": "Organization",
+          "@id": baseUrl + "#organization",
+          "name": "XNAJA",
+          "url": baseUrl,
+          "logo": {
+            "@type": "ImageObject",
+            "@id": baseUrl + "#logo",
+            "url": baseUrl + "source/assets/icon-512.png",
+            "width": 512,
+            "height": 512
+          }
+        },
+        {
+          "@type": "WebPage",
+          "@id": baseUrl + "#webpage",
+          "url": baseUrl,
+          "name": "XNAJA – Jogo da Cobrinha Online Grátis (Snake)",
+          "description": "Jogue XNAJA, o jogo da cobrinha (snake) online e grátis. Arraste o dedo no celular ou use as setas no PC, coma estrelas, suba de nível e desvie de obstáculos.",
+          "inLanguage": "pt-BR",
+          "isPartOf": { "@id": baseUrl + "#website" },
+          "primaryImageOfPage": { "@id": baseUrl + "#primaryimage" },
+          "about": { "@id": baseUrl + "#game" }
+        },
+        {
+          "@type": "ImageObject",
+          "@id": baseUrl + "#primaryimage",
+          "url": imageUrl,
+          "contentUrl": imageUrl,
+          "width": 1200,
+          "height": 630,
+          "caption": "XNAJA: cobrinha verde-menta perseguindo uma estrela amarela, com o logo de uma naja",
+          "inLanguage": "pt-BR"
+        },
+        {
+          "@type": ["VideoGame", "WebApplication"],
+          "@id": baseUrl + "#game",
+          "name": "XNAJA",
+          "alternateName": ["Jogo da Cobrinha XNAJA", "XNAJA Snake"],
+          "url": baseUrl,
+          "description": "Jogue XNAJA, o jogo da cobrinha (snake) online e grátis. Arraste o dedo no celular ou use as setas no PC, coma estrelas, suba de nível e desvie de obstáculos.",
+          "image": { "@id": baseUrl + "#primaryimage" },
+          "inLanguage": "pt-BR",
+          "applicationCategory": "GameApplication",
+          "genre": ["Arcade", "Snake", "Casual"],
+          "operatingSystem": "Any",
+          "browserRequirements": "Requer JavaScript e um navegador moderno",
+          "gamePlatform": ["Mobile Web", "Desktop Web"],
+          "playMode": "SinglePlayer",
+          "isAccessibleForFree": true,
+          "keywords": "xnaja, jogo da cobrinha, jogo da cobra, snake, snake online, jogo da naja, jogo de celular, jogo arcade, jogo grátis, jogo online grátis, cobrinha com estrelas, jogo html5, snake game",
+          "publisher": { "@id": baseUrl + "#organization" },
+          "isPartOf": { "@id": baseUrl + "#website" },
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "BRL",
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      ]
+    };
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.text = JSON.stringify(schema);
+    document.head.appendChild(script);
+  })();
+</script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+<link rel="stylesheet" href="source/css/style.css">
+</head>
+<body>
+<header>
+  <h1 id="brand">
+    <svg class="logo" viewBox="0 0 32 32" aria-hidden="true">
+      <path d="M16 11.2C12 12 7.2 14.6 5.6 20.2 4.8 23.6 7.6 26 11 26.2L16 26.4 21 26.2C24.4 26 27.2 23.6 26.4 20.2 24.8 14.6 20 12 16 11.2Z" fill="currentColor"/>
+      <path d="M16 25.5c0 3.6 5.2 2.6 6.6 5" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round"/>
+      <path d="M11.8 6.2C11.8 3.8 13.6 2 16 2s4.2 1.8 4.2 4.2c0 2.8-1.8 5.6-4.2 5.6s-4.2-2.8-4.2-5.6Z" fill="currentColor"/>
+      <circle cx="14.2" cy="6" r="1" fill="#04230f"/>
+      <circle cx="17.8" cy="6" r="1" fill="#04230f"/>
+      <path d="M11.6 17.2c-.9 2.8.4 5 2.2 6.2M20.4 17.2c.9 2.8-.4 5-2.2 6.2M13.8 23.4c1.4.8 2.6.8 4.4 0" fill="none" stroke="#04230f" stroke-width="1.3" stroke-linecap="round" opacity=".5"/>
+      <path d="M16 11.8V15m0 0l-1.3 1.5M16 15l1.3 1.5" fill="none" stroke="#ff6b6b" stroke-width="1.1" stroke-linecap="round"/>
+    </svg>
+    <span class="brand-name">XNAJA</span>
+  </h1>
+  <div class="toolbar">
+    <button class="pill" id="historyOpen" type="button" aria-label="Histórico"><i class="fa-solid fa-clock-rotate-left" aria-hidden="true"></i><span>Histórico</span></button>
+    <div class="pill lives" id="lives" aria-label="Vidas extras" hidden><i class="fa-solid fa-heart" aria-hidden="true"></i><span id="livesValue">0</span></div>
+    <div class="pill level" id="level" aria-label="Nível"><i class="fa-solid fa-bolt" aria-hidden="true"></i><span id="levelValue">1</span></div>
+    <div class="pill score" id="score">0</div>
+  </div>
+  <div class="xp" id="xp" aria-hidden="true"><i id="xpFill"></i></div>
+  <span class="nav-fx" id="navFx" aria-hidden="true"></span>
+</header>
+
+<noscript>
+  <p style="padding:24px;text-align:center;color:#b4b4b4">XNAJA é um jogo da cobrinha online e grátis. Ative o JavaScript no navegador para jogar.</p>
+</noscript>
+<main class="stage" id="stage">
+  <canvas id="board"></canvas>
+  <div class="overlay" id="menu">
+    <div class="menu">
+      <div class="menu-head">
+        <h2 id="menuTitle">Ajustes</h2>
+        <p id="menuText"></p>
+      </div>
+      <div class="stats" id="menuStats"></div>
+      <button class="primary" id="menuButton" type="button">Jogar</button>
+      <div class="quick-actions">
+        <button class="action-button" id="guideOpen" type="button"><i class="fa-solid fa-book-open" aria-hidden="true"></i><span>Guia</span></button>
+        <button class="action-button" id="settingsOpen" type="button"><i class="fa-solid fa-sliders" aria-hidden="true"></i><span>Mais ajustes</span></button>
+      </div>
+      <div class="panel" id="settingsPanel">
+        <div class="row">
+          <span><i class="fa-solid fa-gamepad" aria-hidden="true"></i>Controle</span>
+          <div class="segmented" data-setting="control">
+            <button type="button" data-value="0"><i class="fa-solid fa-hand-pointer" aria-hidden="true"></i>Arrastar</button>
+            <button type="button" data-value="1"><i class="fa-solid fa-arrows-up-down-left-right" aria-hidden="true"></i>D-pad</button>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="row">
+          <span><i class="fa-solid fa-headphones" aria-hidden="true"></i>Áudio</span>
+          <div class="audio-toggles">
+            <button class="toggle" type="button" data-setting="music" aria-pressed="true"><i class="fa-solid fa-music" aria-hidden="true"></i><span>Música</span></button>
+            <button class="toggle" type="button" data-setting="sound" data-on="fa-volume-high" data-off="fa-volume-xmark" aria-pressed="true"><i class="fa-solid fa-volume-high" aria-hidden="true"></i><span>Sons</span></button>
+          </div>
+        </div>
+        <label class="volume">
+          <i class="fa-solid fa-volume-high" id="volumeIcon" aria-hidden="true"></i>
+          <input type="range" id="volume" min="0" max="100" step="5" aria-label="Volume geral">
+          <span id="volumeValue">100%</span>
+        </label>
+      </div>
+      <div class="hint">
+        <span><i class="fa-solid fa-keyboard" aria-hidden="true"></i>Setas ou WASD</span>
+        <span><i class="fa-solid fa-pause" aria-hidden="true"></i>Espaço pausa</span>
+        <span><i class="fa-solid fa-volume-high" aria-hidden="true"></i>M som</span>
+      </div>
+      <div class="build">
+        <span class="version" id="version" hidden></span>
+        <button class="pill update" id="updateButton" type="button" hidden></button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div class="dpad" id="dpad" role="group" aria-label="Direcional" hidden>
+  <div class="dpad-pad">
+    <svg class="dpad-shadow" viewBox="0 0 100 100" aria-hidden="true">
+      <use href="#dpadCross" fill="#000" opacity="0.55" transform="translate(0 7)" filter="url(#dpadSoft)"/>
+      <rect class="dpad-aura" data-key="arrowup" x="38" y="4" width="24" height="22" rx="8" filter="url(#dpadAuraBlur)"/>
+      <rect class="dpad-aura" data-key="arrowright" x="74" y="38" width="22" height="24" rx="8" filter="url(#dpadAuraBlur)"/>
+      <rect class="dpad-aura" data-key="arrowdown" x="38" y="74" width="24" height="22" rx="8" filter="url(#dpadAuraBlur)"/>
+      <rect class="dpad-aura" data-key="arrowleft" x="4" y="38" width="22" height="24" rx="8" filter="url(#dpadAuraBlur)"/>
+    </svg>
+    <div class="dpad-frost"></div>
+    <svg class="dpad-art" viewBox="0 0 100 100" aria-hidden="true">
+      <defs>
+        <path id="dpadCross" d="M40 0H60A8 8 0 0 1 68 8V26A6 6 0 0 0 74 32H92A8 8 0 0 1 100 40V60A8 8 0 0 1 92 68H74A6 6 0 0 0 68 74V92A8 8 0 0 1 60 100H40A8 8 0 0 1 32 92V74A6 6 0 0 0 26 68H8A8 8 0 0 1 0 60V40A8 8 0 0 1 8 32H26A6 6 0 0 0 32 26V8A8 8 0 0 1 40 0Z"/>
+        <path id="dpadArrow" d="M50 11.6L59 25.4H41Z"/>
+        <clipPath id="dpadShape"><use href="#dpadCross"/></clipPath>
+        <clipPath id="dpadFrost" clipPathUnits="objectBoundingBox"><use href="#dpadCross" transform="scale(0.01)"/></clipPath>
+        <linearGradient id="dpadBody" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#fff" stop-opacity="0.22"/>
+          <stop offset="0.5" stop-color="#fff" stop-opacity="0.07"/>
+          <stop offset="1" stop-color="#fff" stop-opacity="0.12"/>
+        </linearGradient>
+        <linearGradient id="dpadRim" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="100" y2="100">
+          <stop offset="0" stop-color="#fff" stop-opacity="0.85"/>
+          <stop offset="0.4" stop-color="#fff" stop-opacity="0.1"/>
+          <stop offset="0.7" stop-color="#fff" stop-opacity="0.08"/>
+          <stop offset="1" stop-color="#fff" stop-opacity="0.38"/>
+        </linearGradient>
+        <linearGradient id="dpadGloss" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#fff" stop-opacity="0.32"/>
+          <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+        </linearGradient>
+        <radialGradient id="dpadHub" cx="0.5" cy="0.5" r="0.5">
+          <stop offset="0" stop-color="#000" stop-opacity="0.38"/>
+          <stop offset="0.7" stop-color="#000" stop-opacity="0.12"/>
+          <stop offset="1" stop-color="#fff" stop-opacity="0.12"/>
+        </radialGradient>
+        <radialGradient id="dpadZoneFill" gradientUnits="userSpaceOnUse" cx="50" cy="50" r="50">
+          <stop offset="0.3" class="dpad-glow-core"/>
+          <stop offset="1" class="dpad-glow-edge"/>
+        </radialGradient>
+        <filter id="dpadSoft" x="-30%" y="-30%" width="160%" height="160%">
+          <feGaussianBlur stdDeviation="5"/>
+        </filter>
+        <filter id="dpadAuraBlur" filterUnits="userSpaceOnUse" x="-20" y="-20" width="140" height="140">
+          <feGaussianBlur stdDeviation="6"/>
+        </filter>
+        <filter id="dpadGlow" x="-60%" y="-60%" width="220%" height="220%">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="2.4" result="blur"/>
+          <feMerge>
+            <feMergeNode in="blur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+      </defs>
+      <use class="dpad-body" href="#dpadCross"/>
+      <use class="dpad-bevel" href="#dpadCross" transform="translate(3.2 3.2) scale(0.936)"/>
+      <g clip-path="url(#dpadShape)">
+        <rect class="dpad-zone" data-key="arrowup" x="32" y="0" width="36" height="36"/>
+        <rect class="dpad-zone" data-key="arrowright" x="64" y="32" width="36" height="36"/>
+        <rect class="dpad-zone" data-key="arrowdown" x="32" y="64" width="36" height="36"/>
+        <rect class="dpad-zone" data-key="arrowleft" x="0" y="32" width="36" height="36"/>
+        <ellipse class="dpad-gloss" cx="38" cy="-6" rx="62" ry="36"/>
+      </g>
+      <circle class="dpad-hub" cx="50" cy="50" r="11"/>
+      <path class="dpad-crescent" d="M44.8 42.6A9 9 0 0 1 55.2 42.6"/>
+      <path class="dpad-spec" d="M42 3H58"/>
+      <path class="dpad-spec" d="M3 42V58"/>
+      <path class="dpad-spec faint" d="M97 42V58"/>
+      <path class="dpad-spec faint" d="M42 97H58"/>
+      <path class="dpad-accent" data-key="arrowup" d="M42 3H58"/>
+      <path class="dpad-accent" data-key="arrowright" d="M97 42V58"/>
+      <path class="dpad-accent" data-key="arrowdown" d="M42 97H58"/>
+      <path class="dpad-accent" data-key="arrowleft" d="M3 42V58"/>
+      <use class="dpad-arrow" data-key="arrowup" href="#dpadArrow"/>
+      <use class="dpad-arrow" data-key="arrowright" href="#dpadArrow" transform="rotate(90 50 50)"/>
+      <use class="dpad-arrow" data-key="arrowdown" href="#dpadArrow" transform="rotate(180 50 50)"/>
+      <use class="dpad-arrow" data-key="arrowleft" href="#dpadArrow" transform="rotate(270 50 50)"/>
+    </svg>
+  </div>
+</div>
+
+<section class="sheet" id="sheet" aria-hidden="true">
+  <div class="sheet-header">
+    <h2><i class="fa-solid fa-clock-rotate-left" aria-hidden="true"></i>Histórico</h2>
+    <button class="pill" id="historyClose" type="button"><i class="fa-solid fa-xmark" aria-hidden="true"></i><span>Fechar</span></button>
+  </div>
+  <ul class="history-list" id="historyList"></ul>
+  <div class="sheet-footer">
+    <button class="pill danger" id="historyClear" type="button"><i class="fa-solid fa-trash-can" aria-hidden="true"></i>Limpar tudo</button>
+  </div>
+</section>
+
+<dialog class="dialog guide" id="guideDialog" aria-labelledby="guideTitle">
+  <div class="dialog-header">
+    <h2 id="guideTitle"></h2>
+    <button class="pill" id="guideClose" type="button"><i class="fa-solid fa-xmark" aria-hidden="true"></i><span>Fechar</span></button>
+  </div>
+  <div class="guide-tabs" id="guideTabs" role="tablist" aria-label="Seções do guia"></div>
+  <div class="dialog-body guide-body" id="guideBody" role="tabpanel"></div>
+</dialog>
+
+<dialog class="dialog" id="settingsDialog" aria-labelledby="settingsTitle">
+  <div class="dialog-header">
+    <h2 id="settingsTitle"><i class="fa-solid fa-sliders" aria-hidden="true"></i>Mais ajustes</h2>
+    <button class="pill" id="settingsClose" type="button"><i class="fa-solid fa-xmark" aria-hidden="true"></i><span>Fechar</span></button>
+  </div>
+  <div class="dialog-body">
+    <div class="row" id="sensRow">
+      <span><i class="fa-solid fa-hand-pointer" aria-hidden="true"></i>Sensibilidade do arrasto</span>
+      <div class="segmented" data-setting="sens">
+        <button type="button" data-value="28">Baixa</button>
+        <button type="button" data-value="18">Média</button>
+        <button type="button" data-value="12">Alta</button>
+      </div>
+    </div>
+    <div class="row">
+      <span><i class="fa-solid fa-gauge-high" aria-hidden="true"></i>Velocidade inicial</span>
+      <div class="segmented" data-setting="speed">
+        <button type="button" data-value="320">Zen</button>
+        <button type="button" data-value="260">Lenta</button>
+        <button type="button" data-value="200">Normal</button>
+        <button type="button" data-value="150">Rápida</button>
+        <button type="button" data-value="110">Turbo</button>
+      </div>
+    </div>
+    <div class="row">
+      <span><i class="fa-solid fa-cubes" aria-hidden="true"></i>Obstáculos</span>
+      <div class="segmented" data-setting="obstacles">
+        <button type="button" data-value="0">Nenhum</button>
+        <button type="button" data-value="1">Poucos</button>
+        <button type="button" data-value="2">Muitos</button>
+      </div>
+    </div>
+    <div class="row">
+      <span><i class="fa-solid fa-vector-square" aria-hidden="true"></i>Bordas</span>
+      <div class="segmented" data-setting="walls">
+        <button type="button" data-value="0"><i class="fa-solid fa-repeat" aria-hidden="true"></i>Atravessam</button>
+        <button type="button" data-value="1"><i class="fa-solid fa-border-all" aria-hidden="true"></i>Sólidas</button>
+      </div>
+    </div>
+    <div class="row">
+      <span><i class="fa-solid fa-volume-high" aria-hidden="true"></i>Som</span>
+      <div class="segmented" data-setting="sound">
+        <button type="button" data-value="1"><i class="fa-solid fa-volume-high" aria-hidden="true"></i>Ligado</button>
+        <button type="button" data-value="0"><i class="fa-solid fa-volume-xmark" aria-hidden="true"></i>Desligado</button>
+      </div>
+    </div>
+    <div class="row">
+      <span><i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i>Gráficos</span>
+      <div class="segmented" data-setting="graphics">
+        <button type="button" data-value="0"><i class="fa-solid fa-square" aria-hidden="true"></i>Básico</button>
+        <button type="button" data-value="1"><i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i>Normal</button>
+      </div>
+    </div>
+    <div class="row" id="glowRow">
+      <span><i class="fa-solid fa-lightbulb" aria-hidden="true"></i>Glow da cobra</span>
+      <div class="segmented" data-setting="glow">
+        <button type="button" data-value="1"><i class="fa-solid fa-sun" aria-hidden="true"></i>Ativado</button>
+        <button type="button" data-value="0"><i class="fa-regular fa-sun" aria-hidden="true"></i>Desativado</button>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<script src="source/js/config.js"></script>
+<script src="source/js/app.js"></script>
+</body>
+</html>

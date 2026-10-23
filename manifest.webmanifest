@@ -1,0 +1,35 @@
+{
+    "name": "XNAJA – Jogo da Cobrinha",
+    "short_name": "XNAJA",
+    "description": "Jogue XNAJA, o jogo da cobrinha (snake) online e grátis. Arraste o dedo no celular ou use as setas no PC, coma estrelas, suba de nível e desvie de obstáculos.",
+    "lang": "pt-BR",
+    "dir": "ltr",
+    "id": "./",
+    "start_url": "./",
+    "scope": "./",
+    "display": "standalone",
+    "orientation": "any",
+    "background_color": "#000000",
+    "theme_color": "#000000",
+    "categories": [
+        "games",
+        "entertainment"
+    ],
+    "icons": [
+        {
+            "src": "source/assets/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "source/assets/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "source/assets/icon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml"
+        }
+    ]
+}
