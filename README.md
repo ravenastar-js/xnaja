@@ -126,6 +126,18 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para de
 
 ---
 
+## <img src="https://api.iconify.design/mdi/star.svg?color=%236effa8" width="20" height="20" style="vertical-align: middle;" />  Star History
+
+<a href="https://www.star-history.com/?repos=ravenastar-js%2Fxnaja&type=date&legend=top-left">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=ravenastar-js/xnaja&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=ravenastar-js/xnaja&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=ravenastar-js/xnaja&type=date&legend=top-left" />
+ </picture>
+</a>
+
+---
+
 <div align="center">
 
 <h2>
