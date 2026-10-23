@@ -8,7 +8,7 @@ Thumbs.db
 *.sublime-project
 *.sublime-workspace
 
-# Node.js (se usar npx serve, npm, etc.)
+# Node.js
 node_modules/
 npm-debug.log*
 yarn-debug.log*
@@ -16,7 +16,7 @@ yarn-error.log*
 package-lock.json
 yarn.lock
 
-# Python (se usar python -m http.server)
+# Python
 __pycache__/
 *.py[cod]
 .venv/
