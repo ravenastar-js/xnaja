@@ -10,7 +10,7 @@
 </h3>
 
 [![HTML5](https://img.shields.io/badge/HTML5-000000?style=for-the-badge&logo=html5&logoColor=6effa8&labelColor=0c1a13)](#)
-[![CSS3](https://img.shields.io/badge/CSS3-000000?style=for-the-badge&logo=css3&logoColor=6effa8&labelColor=0c1a13)](#)
+[![CSS3](https://img.shields.io/badge/CSS3-000000?style=for-the-badge&logo=css&logoColor=6effa8&labelColor=0c1a13)](#)
 [![JavaScript](https://img.shields.io/badge/JavaScript-000000?style=for-the-badge&logo=javascript&logoColor=6effa8&labelColor=0c1a13)](#)
 [![PWA](https://img.shields.io/badge/PWA-000000?style=for-the-badge&logo=pwa&logoColor=6effa8&labelColor=0c1a13)](#)
 [![License](https://img.shields.io/badge/License-MIT-000000?style=for-the-badge&logo=opensourceinitiative&logoColor=6effa8&labelColor=0c1a13)](#)
@@ -58,7 +58,7 @@ O objetivo é simples: guie a cobrinha, coma o máximo de estrelas que puder e e
 <div align="center">
 
 [![HTML5](https://img.shields.io/badge/HTML-000000?style=flat-square&logo=html5&logoColor=6effa8&labelColor=0c1a13)](https://developer.mozilla.org/en-US/docs/Web/HTML)
-[![CSS3](https://img.shields.io/badge/CSS-000000?style=flat-square&logo=css3&logoColor=6effa8&labelColor=0c1a13)](https://developer.mozilla.org/en-US/docs/Web/CSS)
+[![CSS3](https://img.shields.io/badge/CSS-000000?style=flat-square&logo=css&logoColor=6effa8&labelColor=0c1a13)](https://developer.mozilla.org/en-US/docs/Web/CSS)
 [![JavaScript](https://img.shields.io/badge/JavaScript-000000?style=flat-square&logo=javascript&logoColor=6effa8&labelColor=0c1a13)](https://javascript.com/)
 [![Anime.js](https://img.shields.io/badge/Anime.js-000000?style=flat-square&logo=javascript&logoColor=6effa8&labelColor=0c1a13)](https://animejs.com/)
 [![CDN](https://img.shields.io/badge/CDN-000000?style=flat-square&logo=cloudflare&logoColor=6effa8&labelColor=0c1a13)](https://cdnjs.com/)
