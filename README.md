@@ -26,6 +26,8 @@
   <img src="source/assets/og-banner.svg" alt="XNAJA Banner" width="100%" />
 </div>
 
+https://github.com/user-attachments/assets/ca87249a-8e73-410b-a4ae-99aa9405258f
+
 ---
 
 <h2>
