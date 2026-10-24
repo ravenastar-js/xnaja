@@ -14,6 +14,7 @@
 [![JavaScript](https://img.shields.io/badge/JavaScript-000000?style=for-the-badge&logo=javascript&logoColor=6effa8&labelColor=0c1a13)](#)
 [![PWA](https://img.shields.io/badge/PWA-000000?style=for-the-badge&logo=pwa&logoColor=6effa8&labelColor=0c1a13)](#)
 [![License](https://img.shields.io/badge/License-MIT-000000?style=for-the-badge&logo=opensourceinitiative&logoColor=6effa8&labelColor=0c1a13)](#)
+[![Claude | Gerado com IA](https://img.shields.io/badge/Claude_%7C_Gerado_com_IA-000000?style=for-the-badge&logo=claude&logoColor=6effa8&labelColor=0c1a13)](https://claude.ai/)
 
 *Jogo online, gratuito e otimizado para Mobile e Desktop*
 
@@ -34,7 +35,13 @@
 
 O **XNAJA** é um jogo da cobrinha (Snake) moderno, online e gratuito. Desenvolvido com tecnologias web nativas (HTML5, CSS3 e JavaScript puro), ele oferece uma experiência fluida e responsiva tanto em dispositivos móveis quanto em desktops.
 
-O objetivo é simples: guie a cobrinha, coma o máximo de estrelas que puder e evite bater no próprio corpo, nos obstáculos ou nas bordas (se configuradas como sólidas).
+O objetivo é simples: guie a cobrinha, **devore o máximo de estrelinhas que puder** e evite bater no próprio corpo, nos obstáculos ou nas bordas (se configuradas como sólidas).
+
+> [!NOTE]
+> **Este projeto começou como um experimento.** <img src="https://api.iconify.design/mdi/flask.svg?color=%236effa8" width="20" height="20" style="vertical-align: middle;" />
+> O XNAJA foi feito para passar o tempo, e a ideia é manter o escopo simples. Não há planos de transformar isso em algo complexo ou de grande escala. Fique à vontade para jogar e usar como quiser. <img src="https://api.iconify.design/mdi/emoticon-happy-outline.svg?color=%236effa8" width="20" height="20" style="vertical-align: middle;" />
+>
+> O jogo, a documentação e os ajustes foram desenvolvidos com apoio de IA, incluindo o **Claude**, na geração de código e ideias.
 
 <h3>
   <img src="https://api.iconify.design/mdi/creation.svg?color=%236effa8" width="22" height="22" style="vertical-align: middle;" />
@@ -64,7 +71,6 @@ O objetivo é simples: guie a cobrinha, coma o máximo de estrelas que puder e e
 [![CDN](https://img.shields.io/badge/CDN-000000?style=flat-square&logo=cloudflare&logoColor=6effa8&labelColor=0c1a13)](https://cdnjs.com/)
 [![Font Awesome](https://img.shields.io/badge/Font_Awesome-000000?style=flat-square&logo=fontawesome&logoColor=6effa8&labelColor=0c1a13)](https://fontawesome.com/)
 [![Git](https://img.shields.io/badge/Git-000000?style=flat-square&logo=git&logoColor=6effa8&labelColor=0c1a13)](https://git-scm.com/)
-[![Node.js](https://img.shields.io/badge/Node.js-000000?style=flat-square&logo=nodedotjs&logoColor=6effa8&labelColor=0c1a13)](https://nodejs.org/en/)
 
 </div>
 </details>
@@ -113,7 +119,25 @@ Acesse: [https://ravenastar.com/xnaja/](https://ravenastar.com/xnaja/), [https:/
 - <img src="https://api.iconify.design/mdi/heart.svg?color=%236effa8" width="20" height="20" style="vertical-align: middle;" /> **Vidas Extras:** A partir do nível 4, corações aparecem. Ao bater, você entra no "Modo Fantasma" e atravessa o próprio corpo por alguns passos.
 - <img src="https://api.iconify.design/mdi/diamond-stone.svg?color=%236effa8" width="20" height="20" style="vertical-align: middle;" /> **Modo Prisma:** Desbloqueie efeitos visuais holográficos ao alcançar o nível 10.
 - <img src="https://api.iconify.design/mdi/cellphone.svg?color=%236effa8" width="20" height="20" style="vertical-align: middle;" /> **PWA:** Jogue offline e instale no seu celular ou desktop.
-- <img src="https://api.iconify.design/mdi/volume-high.svg?color=%236effa8" width="20" height="20" style="vertical-align: middle;" /> **Áudio Imersivo:** Efeitos sonoros gerados proceduralmente via Web Audio API.
+- <img src="https://api.iconify.design/mdi/volume-high.svg?color=%236effa8" width="20" height="20" style="vertical-align: middle;" /> **Áudio Imersivo:** Efeitos sonoros gerados proceduralmente via Web Audio API e trilha sonora original.
+
+---
+
+<h2>
+  <img src="https://api.iconify.design/mdi/music-note.svg?color=%236effa8" width="28" height="28" style="vertical-align: middle;" />
+  Músicas
+</h2>
+
+As músicas do **XNAJA** foram geradas com o auxílio de inteligência artificial utilizando as seguintes plataformas:
+
+- <img src="https://api.iconify.design/mdi/robot.svg?color=%236effa8" width="20" height="20" style="vertical-align: middle;" /> [MiniMax Audio](https://www.minimax.io/audio/music)
+- <img src="https://api.iconify.design/mdi/robot.svg?color=%236effa8" width="20" height="20" style="vertical-align: middle;" /> [Suno](https://suno.com/)
+
+<img src="https://api.iconify.design/mdi/headphones.svg?color=%236effa8" width="20" height="20" style="vertical-align: middle;" /> O álbum completo da trilha sonora está hospedado no SoundCloud:
+
+[![SoundCloud](https://img.shields.io/badge/SoundCloud-000000?style=for-the-badge&logo=soundcloud&logoColor=6effa8&labelColor=0c1a13)](https://soundcloud.com/ravenastar/sets/xnaja)
+
+> **Ouça em:** [https://soundcloud.com/ravenastar/sets/xnaja](https://soundcloud.com/ravenastar/sets/xnaja)
 
 ---
 
