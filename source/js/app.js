@@ -2250,11 +2250,17 @@ function syncSettings() {
   });
   document.querySelectorAll('.segmented').forEach((group) => {
     const key = group.dataset.setting;
-    group.querySelectorAll('button').forEach((button) => {
+    const buttons = [...group.querySelectorAll('button')];
+    let activeIndex = 0;
+    buttons.forEach((button, index) => {
       const selected = Number(button.dataset.value) === settings[key];
       button.classList.toggle('on', selected);
       button.classList.toggle('off', selected && OFF_VALUES[key] === Number(button.dataset.value));
+      if (selected) activeIndex = index;
     });
+    group.style.setProperty('--thumb-index', String(activeIndex));
+    group.style.setProperty('--thumb-count', String(buttons.length));
+    group.classList.toggle('is-off', buttons[activeIndex].classList.contains('off'));
   });
 }
 
@@ -2428,6 +2434,10 @@ syncSettings();
 layout();
 resetToIdle();
 requestAnimationFrame(frame);
+
+requestAnimationFrame(() => {
+  document.querySelectorAll('.segmented').forEach((group) => group.classList.add('ready'));
+});
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {

@@ -1,4 +1,4 @@
-const CACHE = 'xnaja-v6.7';
+const CACHE = 'xnaja-v6.8';
 const PAGE = './';
 const ASSETS = [
   PAGE,
