@@ -26,7 +26,7 @@
   <img src="source/assets/og-banner.svg" alt="XNAJA Banner" width="100%" />
 </div>
 
-<div align="center">
+<br>
 
 <div align="center">
 
