@@ -2001,7 +2001,7 @@ function handleSwipe(x, y) {
 }
 
 ui.stage.addEventListener('pointerdown', (event) => {
-  if (settings.control !== CONTROL.drag || !event.isPrimary || event.target.closest('button, input')) return;
+  if (settings.control !== CONTROL.drag || !event.isPrimary || event.target.closest('button, input, a')) return;
   Object.assign(swipe, { pointerId: event.pointerId, x: event.clientX, y: event.clientY });
   ui.stage.setPointerCapture(event.pointerId);
 });
