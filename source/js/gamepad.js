@@ -1,3 +1,51 @@
+/**
+ * @typedef {Object} PadButtonInput
+ * @property {'button'} type
+ * @property {number} index
+ */
+
+/**
+ * @typedef {Object} PadAxisInput
+ * @property {'axis'} type
+ * @property {number} index
+ * @property {number} value
+ */
+
+/**
+ * @typedef {PadButtonInput | PadAxisInput} PadInput
+ */
+
+/**
+ * @typedef {Object} JoystickActionDefinition
+ * @property {string} icon
+ * @property {string} label
+ */
+
+/**
+ * @typedef {Object} PadSnapshot
+ * @property {number[]} axes
+ * @property {boolean[]} buttons
+ */
+
+/**
+ * @typedef {Object} LearningState
+ * @property {string} action
+ * @property {number} pad
+ * @property {PadSnapshot} base
+ * @property {number} until
+ */
+
+/**
+ * @typedef {Object} GamepadProfile
+ * @property {Record<string, PadInput[]>} [action]
+ */
+
+/**
+ * @typedef {Object} Direction
+ * @property {number} x
+ * @property {number} y
+ */
+
 const joystickUi = {
   status: byId('joystickStatus'),
   open: byId('joystickOpen'),
@@ -15,13 +63,54 @@ const joystick = {
   learning: null
 };
 
+/**
+ * 🎮 Retorna os controles conectados
+ * @returns {Gamepad[]}
+ */
 const connectedPads = () => [...(navigator.getGamepads?.() ?? [])].filter(Boolean);
+
+/**
+ * 🏷️ Nome amigável do controle
+ * @param {Gamepad} pad
+ * @returns {string}
+ */
 const padName = (pad) => pad.id.replace(/\s*\(.*$/, '').trim() || pad.id;
+
+/**
+ * 🔗 Bindings de uma ação para o controle
+ * @param {Gamepad} pad
+ * @param {string} action
+ * @returns {PadInput[]}
+ */
 const bindingsFor = (pad, action) => joystick.profiles[pad.id]?.[action] ?? JOYSTICK_DEFAULTS[action];
+
+/**
+ * ✏️ Input customizado de uma ação
+ * @param {Gamepad} pad
+ * @param {string} action
+ * @returns {PadInput | undefined}
+ */
 const customInput = (pad, action) => joystick.profiles[pad.id]?.[action]?.[0];
+
+/**
+ * 💾 Persiste os perfis no storage
+ * @returns {void}
+ */
 const persistProfiles = () => storage.write(STORAGE_KEYS.gamepad, joystick.profiles);
+
+/**
+ * 🕹️ Verifica se o valor de eixo indica hat (dpad)
+ * @param {number} rest
+ * @returns {boolean}
+ */
 const isHat = (rest) => Math.abs(rest) > JOYSTICK.axisLimit;
 
+/**
+ * ✅ Verifica se um input está ativo no controle
+ * @param {Gamepad} pad
+ * @param {PadInput} input
+ * @returns {boolean}
+ */
 function isActive(pad, input) {
   if (input.type === 'button') return Boolean(pad.buttons[input.index]?.pressed);
   const value = pad.axes[input.index];
@@ -30,6 +119,11 @@ function isActive(pad, input) {
   return Math.abs(value - input.value) < JOYSTICK.hatTolerance;
 }
 
+/**
+ * 📖 Lê as ações ativas do controle
+ * @param {Gamepad} pad
+ * @returns {Set<string>}
+ */
 function readActions(pad) {
   const actions = Object.keys(JOYSTICK_ACTIONS).filter((action) =>
     bindingsFor(pad, action).some((input) => isActive(pad, input))
@@ -37,6 +131,11 @@ function readActions(pad) {
   return new Set(actions);
 }
 
+/**
+ * ⚡ Executa as ações disparadas
+ * @param {string[]} actions
+ * @returns {void}
+ */
 function handleActions(actions) {
   if (document.querySelector('dialog[open]') || isHistoryOpen()) return;
   const direction = JOYSTICK_DIRECTIONS[actions.find((action) => action in JOYSTICK_DIRECTIONS)];
@@ -48,15 +147,32 @@ function handleActions(actions) {
   if (actions.includes('confirm')) handleActionKey('enter');
 }
 
+/**
+ * 📸 Tira um snapshot do estado do controle
+ * @param {Gamepad} pad
+ * @returns {PadSnapshot}
+ */
 function snapshot(pad) {
   return { axes: [...pad.axes], buttons: pad.buttons.map((button) => button.pressed) };
 }
 
+/**
+ * 👆 Verifica se um eixo foi empurrado em relação ao repouso
+ * @param {number} value
+ * @param {number} rest
+ * @returns {boolean}
+ */
 function isPushed(value, rest) {
   if (isHat(rest)) return Math.abs(value) <= JOYSTICK.axisLimit;
   return Math.abs(value) >= JOYSTICK.snap && Math.abs(value) <= JOYSTICK.axisLimit && Math.abs(value - rest) > JOYSTICK.deadzone;
 }
 
+/**
+ * 🎯 Captura o primeiro input novo do controle
+ * @param {Gamepad} pad
+ * @param {PadSnapshot} base
+ * @returns {PadInput | null}
+ */
 function captureInput(pad, base) {
   const button = pad.buttons.findIndex((item, index) => item.pressed && !base.buttons[index]);
   if (button >= 0) return padButton(button);
@@ -67,12 +183,23 @@ function captureInput(pad, base) {
   return padAxis(axis, discrete ? Math.round(value * 100) / 100 : Math.sign(value));
 }
 
+/**
+ * 🗣️ Descreve um input em texto legível
+ * @param {PadInput} input
+ * @returns {string}
+ */
 function describeInput(input) {
   if (input.type === 'button') return `Botão ${input.index}`;
   if (Math.abs(input.value) >= JOYSTICK.snap) return `Eixo ${input.index} ${input.value > 0 ? '+' : '-'}`;
   return `Eixo ${input.index} (${input.value})`;
 }
 
+/**
+ * 🧩 Cria um item de binding da lista
+ * @param {[string, JoystickActionDefinition]} entry
+ * @param {Gamepad | undefined} pad
+ * @returns {HTMLLIElement}
+ */
 function createBinding([action, [icon, label]], pad) {
   const item = document.createElement('li');
   item.className = 'joystick-item';
@@ -97,6 +224,11 @@ function createBinding([action, [icon, label]], pad) {
   return item;
 }
 
+/**
+ * 📊 Renderiza o status dos controles
+ * @param {Gamepad[]} pads
+ * @returns {void}
+ */
 function renderStatus(pads) {
   const [first] = pads;
   const extra = pads.length > 1 ? ` +${pads.length - 1}` : '';
@@ -105,6 +237,10 @@ function renderStatus(pads) {
   joystickUi.status.classList.toggle('on', Boolean(first));
 }
 
+/**
+ * 🖼️ Renderiza toda a interface do joystick
+ * @returns {void}
+ */
 function renderJoystick() {
   const pads = connectedPads();
   const [pad] = pads;
@@ -116,6 +252,11 @@ function renderJoystick() {
   joystickUi.reset.disabled = !pad || !joystick.profiles[pad.id];
 }
 
+/**
+ * 🎓 Inicia o modo de aprendizado de uma ação
+ * @param {string} action
+ * @returns {void}
+ */
 function startLearning(action) {
   const [pad] = connectedPads();
   if (!pad) return;
@@ -123,11 +264,20 @@ function startLearning(action) {
   renderJoystick();
 }
 
+/**
+ * 🛑 Encerra o modo de aprendizado
+ * @returns {void}
+ */
 function stopLearning() {
   joystick.learning = null;
   renderJoystick();
 }
 
+/**
+ * 🧠 Processa o aprendizado do input
+ * @param {Gamepad[]} pads
+ * @returns {void}
+ */
 function learn(pads) {
   const { action, pad: index, base, until } = joystick.learning;
   const pad = pads.find((item) => item.index === index);
@@ -143,6 +293,10 @@ function learn(pads) {
   stopLearning();
 }
 
+/**
+ * 🔄 Loop de polling do joystick
+ * @returns {void}
+ */
 function pollJoystick() {
   const pads = connectedPads();
   for (const pad of pads) {

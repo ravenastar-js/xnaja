@@ -284,9 +284,25 @@ const DIRECTION_KEYS = {
 
 const JOYSTICK = { deadzone: 0.5, snap: 0.9, axisLimit: 1.05, hatTolerance: 0.1, learnMs: 8000 };
 
+/**
+ * 🔘 Cria um input do tipo botão.
+ * @param {number} index
+ * @returns {{type: 'button', index: number}}
+ */
 const padButton = (index) => ({ type: 'button', index });
+
+/**
+ * 🎚️ Cria um input do tipo eixo.
+ * @param {number} index
+ * @param {number} value
+ * @returns {{type: 'axis', index: number, value: number}}
+ */
 const padAxis = (index, value) => ({ type: 'axis', index, value });
 
+/**
+ * 🎮 Ações mapeáveis no joystick.
+ * @type {Object}
+ */
 const JOYSTICK_ACTIONS = {
   up: ['fa-arrow-up', 'Cima'],
   down: ['fa-arrow-down', 'Baixo'],
@@ -296,6 +312,10 @@ const JOYSTICK_ACTIONS = {
   confirm: ['fa-play', 'Confirmar']
 };
 
+/**
+ * 🧭 Direções associadas às ações do joystick.
+ * @type {Object}
+ */
 const JOYSTICK_DIRECTIONS = {
   up: { x: 0, y: -1 },
   down: { x: 0, y: 1 },
@@ -303,6 +323,10 @@ const JOYSTICK_DIRECTIONS = {
   right: { x: 1, y: 0 }
 };
 
+/**
+ * 🎯 Bindings padrão do joystick por ação.
+ * @type {Object}
+ */
 const JOYSTICK_DEFAULTS = {
   up: [padButton(12), padAxis(1, -1), padAxis(9, -1)],
   down: [padButton(13), padAxis(1, 1), padAxis(9, 0.14)],

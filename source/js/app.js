@@ -3,6 +3,11 @@
  * @module App
  */
 
+/**
+ * 🔎 Atalho para `document.getElementById`.
+ * @param {string} id
+ * @returns {HTMLElement}
+ */
 const byId = (id) => document.getElementById(id);
 const ui = {
   stage: byId('stage'),
@@ -58,6 +63,12 @@ const desktopQuery = window.matchMedia('(hover: hover) and (pointer: fine)');
  * @type {Object}
  */
 const storage = {
+  /**
+   * 📖 Lê um valor do localStorage.
+   * @param {string} key
+   * @param {*} fallback
+   * @returns {*}
+   */
   read(key, fallback) {
     try {
       const value = JSON.parse(localStorage.getItem(key));
@@ -66,6 +77,12 @@ const storage = {
       return fallback;
     }
   },
+  /**
+   * 💾 Grava um valor no localStorage.
+   * @param {string} key
+   * @param {*} value
+   * @returns {void}
+   */
   write(key, value) {
     try {
       localStorage.setItem(key, JSON.stringify(value));
@@ -148,6 +165,10 @@ const audio = {
   master: null,
   output: null,
 
+  /**
+   * 🔓 Desbloqueia o contexto de áudio.
+   * @returns {AudioContext|null}
+   */
   unlock() {
     const AudioContextClass = window.AudioContext || window.webkitAudioContext;
     if (!AudioContextClass) return null;
@@ -166,14 +187,28 @@ const audio = {
     return this.context;
   },
 
+  /**
+   * 🎼 Decodifica dados de áudio.
+   * @param {ArrayBuffer} data
+   * @returns {Promise<AudioBuffer>}
+   */
   decode(data) {
     return new Promise((resolve, reject) => this.context.decodeAudioData(data, resolve, reject));
   },
 
+  /**
+   * 🔉 Ajusta o volume mestre.
+   * @returns {void}
+   */
   setVolume() {
     this.output?.gain.setTargetAtTime(settings.volume / 100, this.context.currentTime, 0.03);
   },
 
+  /**
+   * 🎵 Agenda um tom no áudio.
+   * @param {Object} options
+   * @returns {void}
+   */
   schedule({ frequency, endFrequency = frequency, duration = 0.12, type = 'sine', volume = 0.12, delay = 0 }) {
     const context = this.context;
     const start = context.currentTime + delay;
@@ -193,6 +228,11 @@ const audio = {
     oscillator.stop(end + 0.02);
   },
 
+  /**
+   * 🎶 Toca um tom imediato.
+   * @param {Object} options
+   * @returns {void}
+   */
   tone(options) {
     const context = this.unlock();
     if (!context) return;
@@ -200,13 +240,30 @@ const audio = {
     else context.resume().then(() => this.schedule(options)).catch(() => {});
   },
 
+  /**
+   * 🔔 Reproduz um efeito sonoro por nome.
+   * @param {string} name
+   * @param {*} detail
+   * @returns {void}
+   */
   play(name, detail) {
     if (!settings.sound) return;
     SOUND_EFFECTS[name](detail).forEach((tone) => this.tone(tone));
   }
 };
 
+/**
+ * 📏 Normaliza a quantidade de faixas.
+ * @param {number} value
+ * @returns {number}
+ */
 const clampTracks = (value) => Math.min(MUSIC.maxTracks, Math.max(1, Number(value) || 1));
+
+/**
+ * 🔗 Monta a URL de uma faixa.
+ * @param {number} index
+ * @returns {string}
+ */
 const trackUrl = (index) => `${MUSIC.dir}/${MUSIC.name}${index ? `-${index + 1}` : ''}.${MUSIC.ext}`;
 
 /**
@@ -245,11 +302,19 @@ const music = {
   busy: false,
   level: MUSIC.menuVolume,
 
+  /**
+   * 📍 Retorna a posição atual da faixa.
+   * @returns {number}
+   */
   position() {
     if (!this.source) return this.offset;
     return (this.offset + audio.context.currentTime - this.startedAt) % this.buffer.duration;
   },
 
+  /**
+   * 💾 Persiste o estado atual da música na sessão.
+   * @returns {void}
+   */
   persist() {
     try {
       sessionStorage.setItem(STORAGE_KEYS.music, JSON.stringify({ index: this.index, offset: this.position() }));
@@ -258,6 +323,11 @@ const music = {
     }
   },
 
+  /**
+   * 🎼 Carrega (e cacheia) o buffer de uma faixa.
+   * @param {number} index
+   * @returns {Promise<AudioBuffer|null>}
+   */
   bufferFor(index) {
     if (!this.buffers.has(index)) {
       this.buffers.set(
@@ -271,6 +341,10 @@ const music = {
     return this.buffers.get(index);
   },
 
+  /**
+   * 🔀 Reabastece a fila embaralhada de faixas.
+   * @returns {void}
+   */
   refillStock() {
     const stock = [];
     for (let i = 0; i < this.tracks; i++) {
@@ -288,6 +362,10 @@ const music = {
     this.stock = stock;
   },
 
+  /**
+   * 🎯 Escolhe a próxima faixa.
+   * @returns {number}
+   */
   pickNext() {
     if (this.tracks < 2) return 0;
     this.stock = this.stock.filter((i) => i >= 0 && i < this.tracks);
@@ -295,6 +373,10 @@ const music = {
     return this.stock.shift();
   },
 
+  /**
+   * 🔥 Pré-carrega a próxima faixa e limpa buffers antigos.
+   * @returns {void}
+   */
   warm() {
     if (this.tracks > 1 && (this.upcoming === null || this.upcoming >= this.tracks)) this.upcoming = this.pickNext();
     const next = this.tracks > 1 ? this.upcoming : null;
@@ -304,6 +386,10 @@ const music = {
     }
   },
 
+  /**
+   * 🔎 Descobre quantas faixas existem no diretório.
+   * @returns {Promise<void>}
+   */
   async discover() {
     let total = 1;
     for (let index = 1; index < MUSIC.maxTracks; index++) {
@@ -332,6 +418,10 @@ const music = {
     }
   },
 
+  /**
+   * 🔄 Sincroniza o player com o estado atual.
+   * @returns {Promise<void>}
+   */
   async sync() {
     if (!settings.music) {
       this.stop();
@@ -356,6 +446,11 @@ const music = {
     }
   },
 
+  /**
+   * ▶️ Inicia a reprodução de um buffer.
+   * @param {AudioBuffer} buffer
+   * @returns {void}
+   */
   start(buffer) {
     const { context } = audio;
     const source = context.createBufferSource();
@@ -378,6 +473,10 @@ const music = {
     this.warm();
   },
 
+  /**
+   * ⏭️ Avança para a próxima faixa.
+   * @returns {void}
+   */
   advance() {
     const { source, gain } = this;
     this.source = null;
@@ -391,6 +490,10 @@ const music = {
     this.sync();
   },
 
+  /**
+   * ⏹️ Para a reprodução atual.
+   * @returns {void}
+   */
   stop() {
     if (!this.source) return;
     this.offset = this.position();
@@ -405,6 +508,11 @@ const music = {
     }, 1000);
   },
 
+  /**
+   * 🔊 Faz fade do volume para um alvo.
+   * @param {number} volume
+   * @returns {void}
+   */
   fadeTo(volume) {
     this.level = volume;
     this.gain?.gain.setTargetAtTime(volume, audio.context.currentTime, MUSIC.fade);
@@ -414,6 +522,11 @@ const music = {
 music.sync();
 music.discover();
 
+/**
+ * ✅ Valida uma entrada do histórico.
+ * @param {*} entry
+ * @returns {boolean}
+ */
 const isValidEntry = (entry) =>
   entry &&
   typeof entry.id === 'string' &&
@@ -458,8 +571,29 @@ const game = {
   prismAt: 0
 };
 
+/**
+ * 🔢 Interpolação linear.
+ * @param {number} from
+ * @param {number} to
+ * @param {number} t
+ * @returns {number}
+ */
 const lerp = (from, to, t) => from + (to - from) * t;
+
+/**
+ * 🎡 Normaliza um matiz entre 0 e 360.
+ * @param {number} hue
+ * @returns {number}
+ */
 const wrapHue = (hue) => ((hue % 360) + 360) % 360;
+
+/**
+ * 🎨 Gera uma cor HSL.
+ * @param {number} hue
+ * @param {number} saturation
+ * @param {number} lightness
+ * @returns {string}
+ */
 const hsl = (hue, saturation, lightness) => `hsl(${Math.round(wrapHue(hue))} ${saturation}% ${lightness}%)`;
 
 /**
@@ -480,8 +614,18 @@ function hslToRgb(hue, saturation, lightness) {
   return [channel(0), channel(8), channel(4)].map((value) => Math.round(value * 255)).join(', ');
 }
 
+/**
+ * 🔁 Converte string RGB em hexadecimal.
+ * @param {string} rgb
+ * @returns {string}
+ */
 const toHex = (rgb) => `#${rgb.split(', ').map((value) => Number(value).toString(16).padStart(2, '0')).join('')}`;
 
+/**
+ * 💎 Gera o tema prisma para um matiz.
+ * @param {number} hue
+ * @returns {Object}
+ */
 const prismTheme = (hue) => ({
   snake: hsl(hue, 100, 68),
   rgb: hslToRgb(hue, 100, 68),
@@ -489,15 +633,77 @@ const prismTheme = (hue) => ({
   tint: toHex(hslToRgb(hue, 55, 8)),
   prism: true
 });
+
+/**
+ * 📏 Restringe um valor entre dois limites.
+ * @param {number} value
+ * @param {number} min
+ * @param {number} max
+ * @returns {number}
+ */
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+/**
+ * 🎨 Verifica se os efeitos gráficos estão ativos.
+ * @returns {boolean}
+ */
 const hasEffects = () => Boolean(settings.graphics);
+
+/**
+ * 💎 Verifica se o modo prisma está ativo.
+ * @returns {boolean}
+ */
 const isPrism = () => hasEffects() && game.level >= PRISM_LEVEL;
+
+/**
+ * 📳 Vibra o dispositivo.
+ * @param {number|number[]} ms
+ * @returns {void}
+ */
 const vibrate = (ms) => navigator.vibrate?.(ms);
+
+/**
+ * 🙈 Remove o foco do elemento ativo.
+ * @returns {void}
+ */
 const blurActive = () => document.activeElement?.blur();
+
+/**
+ * 📍 Verifica se duas posições são iguais.
+ * @param {Object} a
+ * @param {Object} b
+ * @returns {boolean}
+ */
 const samePosition = (a, b) => a.x === b.x && a.y === b.y;
+
+/**
+ * 🧱 Verifica se uma célula é obstáculo.
+ * @param {Object} cell
+ * @returns {boolean}
+ */
 const isObstacle = (cell) => game.obstacles.some((obstacle) => samePosition(obstacle, cell));
+
+/**
+ * 🎲 Inteiro aleatório entre 0 e limit-1.
+ * @param {number} limit
+ * @returns {number}
+ */
 const randomInt = (limit) => Math.floor(Math.random() * limit);
+
+/**
+ * 🏅 Calcula o nível para uma pontuação.
+ * @param {number} score
+ * @returns {number}
+ */
 const levelFor = (score) => 1 + Math.floor(score / STARS_PER_LEVEL);
+
+/**
+ * 🔄 Distância toroidal entre dois valores.
+ * @param {number} a
+ * @param {number} b
+ * @param {number} size
+ * @returns {number}
+ */
 const torusGap = (a, b, size) => Math.min(Math.abs(a - b), size - Math.abs(a - b));
 
 /**
@@ -516,6 +722,7 @@ function measureScale() {
 
 /**
  * 🖥️ Aplica a escala calculada ao corpo do documento.
+ * @returns {void}
  */
 function applyScale() {
   const scale = measureScale();
@@ -541,6 +748,7 @@ function applyScale() {
  * @param {HTMLElement} element - Elemento alvo.
  * @param {string} icon - Classe do ícone FontAwesome.
  * @param {string} text - Texto a ser exibido.
+ * @returns {void}
  */
 function setLabel(element, icon, text) {
   const glyph = document.createElement('i');
@@ -567,6 +775,7 @@ function bestLevel() {
 
 /**
  * 💾 Salva o histórico no armazenamento local.
+ * @returns {void}
  */
 function persistHistory() {
   storage.write(STORAGE_KEYS.history, history);
@@ -576,6 +785,7 @@ function persistHistory() {
  * ➕ Adiciona um novo resultado ao histórico.
  * @param {number} score - Pontuação.
  * @param {number} level - Nível.
+ * @returns {void}
  */
 function addResult(score, level) {
   const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
@@ -587,6 +797,7 @@ function addResult(score, level) {
 /**
  * ❌ Remove um resultado do histórico.
  * @param {string} id - ID do resultado.
+ * @returns {void}
  */
 function removeResult(id) {
   history = history.filter((entry) => entry.id !== id);
@@ -599,6 +810,7 @@ let clearTimer = null;
 
 /**
  * 🔄 Desarma o botão de limpar histórico.
+ * @returns {void}
  */
 function disarmClear() {
   window.clearTimeout(clearTimer);
@@ -609,6 +821,7 @@ function disarmClear() {
 
 /**
  * 🗑️ Limpa o histórico (com confirmação).
+ * @returns {void}
  */
 function clearHistory() {
   if (!history.length) return;
@@ -699,6 +912,7 @@ function createEntry(entry, best) {
 
 /**
  * 🖨️ Renderiza a lista de histórico na tela.
+ * @returns {void}
  */
 function renderHistory() {
   ui.historyList.replaceChildren();
@@ -787,6 +1001,7 @@ function createGuideItem({ icon = 'fa-circle-info', title = '', text, tag, tone,
 
 /**
  * 🖨️ Renderiza a seção ativa do guia.
+ * @returns {void}
  */
 function renderGuideSection() {
   const section = guide.sections[guide.active];
@@ -817,6 +1032,7 @@ function renderGuideSection() {
 
 /**
  * 🖨️ Renderiza as abas do guia.
+ * @returns {void}
  */
 function renderGuideTabs() {
   setLabel(ui.guideTitle, guide.icon, guide.title);
@@ -837,6 +1053,7 @@ function renderGuideTabs() {
 /**
  * 🔀 Seleciona uma seção do guia.
  * @param {number} index - Índice da seção.
+ * @returns {void}
  */
 function selectGuideSection(index) {
   guide.active = index;
@@ -851,16 +1068,22 @@ function selectGuideSection(index) {
 
 /**
  * 📖 Abre o modal do guia.
+ * @returns {void}
  */
 function openGuide() {
   ui.guideDialog.showModal();
   selectGuideSection(guide.active);
 }
 
+/**
+ * 📜 Verifica se o histórico está aberto.
+ * @returns {boolean}
+ */
 const isHistoryOpen = () => ui.sheet.classList.contains('open');
 
 /**
  * 📜 Abre o painel de histórico.
+ * @returns {void}
  */
 function openHistory() {
   pauseGame();
@@ -872,6 +1095,7 @@ function openHistory() {
 
 /**
  * 📜 Fecha o painel de histórico.
+ * @returns {void}
  */
 function closeHistory() {
   disarmClear();
@@ -927,6 +1151,7 @@ function pickFreeCell(reserved) {
 
 /**
  * ⭐ Posiciona a estrela no tabuleiro.
+ * @returns {void}
  */
 function placeStar() {
   game.star = pickFreeCell([game.heart]);
@@ -934,6 +1159,7 @@ function placeStar() {
 
 /**
  * ❤️ Tenta posicionar um coração aleatoriamente.
+ * @returns {void}
  */
 function maybePlaceHeart() {
   if (game.heart || game.level < HEART_MIN_LEVEL || game.lives >= MAX_LIVES) return;
@@ -946,6 +1172,7 @@ function maybePlaceHeart() {
 
 /**
  * 💖 Sincroniza a UI de vidas.
+ * @returns {void}
  */
 function syncLives() {
   ui.livesValue.textContent = String(game.lives);
@@ -956,6 +1183,7 @@ function syncLives() {
 /**
  * 💖 Define a quantidade de vidas.
  * @param {number} value - Novo valor.
+ * @returns {void}
  */
 function setLives(value) {
   const gained = value > game.lives;
@@ -968,6 +1196,7 @@ function setLives(value) {
 /**
  * ⭐ Define a pontuação atual.
  * @param {number} value - Novo valor.
+ * @returns {void}
  */
 function setScore(value) {
   game.score = value;
@@ -994,6 +1223,7 @@ function touchesObstacle(cell) {
 /**
  * 🧱 Posiciona obstáculos no tabuleiro.
  * @param {number} count - Quantidade a ser posicionada.
+ * @returns {void}
  */
 function placeObstacles(count) {
   const head = game.snake[0];
@@ -1014,10 +1244,15 @@ function placeObstacles(count) {
   }
 }
 
+/**
+ * 🎨 Retorna o tema atual.
+ * @returns {Object}
+ */
 const currentTheme = () => (isPrism() ? prismTheme(game.hue) : THEMES[(game.level - 1) % THEMES.length]);
 
 /**
  * 🎨 Aplica o tema visual atual.
+ * @returns {void}
  */
 function applyTheme() {
   const theme = currentTheme();
@@ -1035,6 +1270,7 @@ function applyTheme() {
 /**
  * 💎 Atualiza a cor no modo prisma.
  * @param {number} now - Timestamp atual.
+ * @returns {void}
  */
 function tickPrism(now) {
   if (game.level < PRISM_LEVEL || reduceMotion) return;
@@ -1052,6 +1288,7 @@ function tickPrism(now) {
 
 /**
  * 📊 Atualiza a barra de progresso do nível.
+ * @returns {void}
  */
 function updateProgress() {
   const fraction = (game.score % STARS_PER_LEVEL) / STARS_PER_LEVEL;
@@ -1063,6 +1300,7 @@ function updateProgress() {
 
 /**
  * ✨ Sincroniza as partículas de brasa no fundo.
+ * @returns {void}
  */
 function syncEmbers() {
   const target = reduceMotion || !hasEffects() ? 0 : Math.min(36, (game.level - 1) * 6);
@@ -1085,6 +1323,7 @@ function syncEmbers() {
  * @param {string} color - Cor.
  * @param {number} reach - Alcance.
  * @param {number} width - Largura.
+ * @returns {void}
  */
 function spawnRing(x, y, color, reach, width = 0.14) {
   if (!hasEffects()) return;
@@ -1095,6 +1334,7 @@ function spawnRing(x, y, color, reach, width = 0.14) {
  * 🔄 Reinicia uma animação CSS.
  * @param {HTMLElement} element - Elemento.
  * @param {string} name - Classe da animação.
+ * @returns {void}
  */
 function retrigger(element, name) {
   element.classList.remove(name);
@@ -1104,6 +1344,7 @@ function retrigger(element, name) {
 
 /**
  * 🎉 Anima a barra de navegação.
+ * @returns {void}
  */
 function celebrateNavbar() {
   const center = ui.level.offsetLeft + ui.level.offsetWidth / 2;
@@ -1115,6 +1356,7 @@ function celebrateNavbar() {
 
 /**
  * 🎉 Anima a subida de nível.
+ * @returns {void}
  */
 function celebrateLevel() {
   if (hasEffects()) playLevelEffects();
@@ -1123,6 +1365,7 @@ function celebrateLevel() {
 
 /**
  * 🎇 Cria efeitos visuais de subida de nível.
+ * @returns {void}
  */
 function playLevelEffects() {
   const head = game.snake[0];
@@ -1144,6 +1387,7 @@ function playLevelEffects() {
 /**
  * ⬆️ Sobe de nível.
  * @param {number} level - Novo nível.
+ * @returns {void}
  */
 function levelUp(level) {
   game.level = level;
@@ -1160,6 +1404,7 @@ function levelUp(level) {
 
 /**
  * 🔄 Reinicia o estado do jogo.
+ * @returns {void}
  */
 function resetGame() {
   const x = Math.floor(game.cols / 2);
@@ -1190,6 +1435,7 @@ function resetGame() {
  * 🔄 Enfileira uma curva.
  * @param {number} x - Direção X.
  * @param {number} y - Direção Y.
+ * @returns {void}
  */
 function queueTurn(x, y) {
   const reference = game.queue.at(-1) ?? game.dir;
@@ -1205,6 +1451,7 @@ function queueTurn(x, y) {
  * @param {string} color - Cor.
  * @param {number} count - Quantidade.
  * @param {number} force - Força.
+ * @returns {void}
  */
 function spawnBurst(target, color = COLORS.star, count = 12, force = 1) {
   if (!hasEffects()) return;
@@ -1219,6 +1466,7 @@ function spawnBurst(target, color = COLORS.star, count = 12, force = 1) {
 
 /**
  * ⭐ Ação de comer a estrela.
+ * @returns {void}
  */
 function eatStar() {
   spawnBurst(game.star);
@@ -1234,6 +1482,7 @@ function eatStar() {
 
 /**
  * ❤️ Ação de comer o coração.
+ * @returns {void}
  */
 function eatHeart() {
   const { x, y } = game.heart;
@@ -1247,6 +1496,7 @@ function eatHeart() {
 
 /**
  * 💔 Ação de perder uma vida.
+ * @returns {void}
  */
 function loseLife() {
   const head = game.snake[0];
@@ -1295,6 +1545,7 @@ function findEscape() {
 
 /**
  * ➡️ Avança o estado do jogo.
+ * @returns {void}
  */
 function advance() {
   if (game.queue.length) {
@@ -1400,6 +1651,7 @@ function createStat({ label, value, best, icon }) {
 /**
  * 🖨️ Exibe o menu na tela.
  * @param {string} mode - Modo do menu.
+ * @returns {void}
  */
 function showMenu(mode) {
   const copy = MENU_COPY[mode]();
@@ -1414,6 +1666,7 @@ function showMenu(mode) {
 
 /**
  * 🙈 Oculta o menu.
+ * @returns {void}
  */
 function hideMenu() {
   ui.menu.classList.add('hide');
@@ -1422,6 +1675,7 @@ function hideMenu() {
 
 /**
  * 🎮 Inicia uma nova partida.
+ * @returns {void}
  */
 function startGame() {
   audio.unlock();
@@ -1439,6 +1693,7 @@ function startGame() {
  * ⏸️ Pausa o jogo.
  * @param {Object} [options] - Opções.
  * @param {boolean} [options.silent] - Sem som.
+ * @returns {void}
  */
 function pauseGame({ silent = false } = {}) {
   if (game.state !== 'playing') return;
@@ -1449,6 +1704,7 @@ function pauseGame({ silent = false } = {}) {
 
 /**
  * ▶️ Continua o jogo pausado.
+ * @returns {void}
  */
 function resumeGame() {
   if (game.state !== 'paused') return;
@@ -1461,6 +1717,7 @@ function resumeGame() {
 
 /**
  * 💀 Finaliza o jogo.
+ * @returns {void}
  */
 function endGame() {
   game.state = 'over';
@@ -1480,6 +1737,7 @@ function endGame() {
 
 /**
  * 🖱️ Lida com a ação do botão do menu.
+ * @returns {void}
  */
 function handleMenuAction() {
   if (game.state === 'paused') resumeGame();
@@ -1519,6 +1777,7 @@ function snakePoints() {
 
 /**
  * 🎨 Desenha os pontos do tabuleiro (estático).
+ * @returns {void}
  */
 function drawFlatDots() {
   const { cell, cols, rows } = game;
@@ -1535,6 +1794,7 @@ function drawFlatDots() {
 /**
  * 🎨 Desenha os pontos do tabuleiro (dinâmico).
  * @param {Object} head - Cabeça da cobra.
+ * @returns {void}
  */
 function drawDots(head) {
   if (!hasEffects()) {
@@ -1571,6 +1831,7 @@ function drawDots(head) {
 /**
  * ⭐ Desenha a estrela.
  * @param {number} now - Timestamp.
+ * @returns {void}
  */
 function drawStar(now) {
   if (!game.star) return;
@@ -1607,6 +1868,7 @@ function drawStar(now) {
  * ⭕ Adiciona um círculo considerando a quebra de borda.
  * @param {Object} point - Ponto.
  * @param {number} radius - Raio.
+ * @returns {void}
  */
 function addCircle(point, radius) {
   const x = ((point.x % game.width) + game.width) % game.width;
@@ -1678,6 +1940,7 @@ function drawSnake(points, dead, now) {
  * ✨ Desenha o brilho da cobra.
  * @param {Array<Object>} points - Pontos.
  * @param {number} now - Timestamp.
+ * @returns {void}
  */
 function drawShimmer(points, now) {
   const { cell } = game;
@@ -1698,6 +1961,7 @@ function drawShimmer(points, now) {
  * ✨ Desenha as brasas no fundo.
  * @param {number} now - Timestamp.
  * @param {number} dt - Delta time.
+ * @returns {void}
  */
 function drawEmbers(now, dt) {
   for (const ember of game.embers) {
@@ -1717,6 +1981,7 @@ function drawEmbers(now, dt) {
 /**
  * 💍 Desenha os anéis de efeito.
  * @param {number} dt - Delta time.
+ * @returns {void}
  */
 function drawRings(dt) {
   game.rings = game.rings.filter((ring) => ring.life > 0);
@@ -1736,6 +2001,7 @@ function drawRings(dt) {
 /**
  * ✨ Emite partículas de rastro.
  * @param {Array<Object>} points - Pontos.
+ * @returns {void}
  */
 function emitTrail(points) {
   if (game.state !== 'playing' || game.level < 3 || reduceMotion || !hasEffects()) return;
@@ -1749,6 +2015,7 @@ function emitTrail(points) {
 /**
  * ✨ Desenha as partículas.
  * @param {number} dt - Delta time.
+ * @returns {void}
  */
 function drawParticles(dt) {
   game.particles = game.particles.filter((particle) => particle.life > 0);
@@ -1770,6 +2037,7 @@ function drawParticles(dt) {
  * 👀 Desenha os olhos da cobra.
  * @param {Object} head - Cabeça.
  * @param {boolean} dead - Se está morta.
+ * @returns {void}
  */
 function drawEyes(head, dead) {
   const { cell, dir } = game;
@@ -1811,6 +2079,7 @@ function drawEyes(head, dead) {
  * @param {number} width - Largura.
  * @param {number} height - Altura.
  * @param {number} radius - Raio.
+ * @returns {void}
  */
 function roundedRect(x, y, width, height, radius) {
   ctx.beginPath();
@@ -1824,6 +2093,7 @@ function roundedRect(x, y, width, height, radius) {
 
 /**
  * 🧱 Desenha os obstáculos.
+ * @returns {void}
  */
 function drawObstacles() {
   const { cell } = game;
@@ -1861,6 +2131,7 @@ function heartGradient(size) {
 /**
  * ❤️ Desenha o coração.
  * @param {number} now - Timestamp.
+ * @returns {void}
  */
 function drawHeart(now) {
   const { heart, cell } = game;
@@ -1908,6 +2179,7 @@ function bannerGradient(banner, half) {
 /**
  * 🏷️ Desenha o banner de nível.
  * @param {number} dt - Delta time.
+ * @returns {void}
  */
 function drawBanner(dt) {
   const banner = game.banner;
@@ -1942,6 +2214,7 @@ function drawBanner(dt) {
  * 🖨️ Renderiza o quadro atual.
  * @param {number} now - Timestamp.
  * @param {number} dt - Delta time.
+ * @returns {void}
  */
 function render(now, dt) {
   tickPrism(now);
@@ -1965,6 +2238,7 @@ function render(now, dt) {
 /**
  * 🔄 Loop principal do jogo.
  * @param {number} now - Timestamp.
+ * @returns {void}
  */
 function frame(now) {
   if (game.state === 'playing') {
@@ -1989,6 +2263,7 @@ const swipe = { pointerId: null, x: 0, y: 0 };
  * 🖐️ Lida com o gesto de arrastar.
  * @param {number} x - Posição X.
  * @param {number} y - Posição Y.
+ * @returns {void}
  */
 function handleSwipe(x, y) {
   const dx = x - swipe.x;
@@ -2011,6 +2286,11 @@ ui.stage.addEventListener('pointermove', (event) => {
   handleSwipe(event.clientX, event.clientY);
 });
 
+/**
+ * 🖐️ Libera o gesto de arrastar.
+ * @param {PointerEvent} event
+ * @returns {void}
+ */
 const releaseSwipe = (event) => {
   if (event.pointerId === swipe.pointerId) swipe.pointerId = null;
 };
@@ -2034,6 +2314,7 @@ const dpad = { pointerId: null, key: null, horizontal: null };
 /**
  * 🎯 Define a tecla ativa do D-pad.
  * @param {string|null} key - Tecla.
+ * @returns {void}
  */
 function setDpadKey(key) {
   if (key === dpad.key) return;
@@ -2065,6 +2346,7 @@ function dpadOffset(event) {
 /**
  * 🎯 Direciona o D-pad.
  * @param {Object} offset - Offset.
+ * @returns {void}
  */
 function steerDpad({ dx, dy, size }) {
   if (Math.hypot(dx, dy) < size * DPAD_DEADZONE) {
@@ -2078,6 +2360,7 @@ function steerDpad({ dx, dy, size }) {
 /**
  * 🎯 Libera o D-pad.
  * @param {PointerEvent} event - Evento.
+ * @returns {void}
  */
 function releaseDpad(event) {
   if (event.pointerId !== dpad.pointerId) return;
@@ -2109,6 +2392,7 @@ ui.stage.addEventListener('pointercancel', releaseSwipe);
 /**
  * ⌨️ Lida com teclas de ação.
  * @param {string} key - Tecla.
+ * @returns {void}
  */
 function handleActionKey(key) {
   if (key === ' ') {
@@ -2164,10 +2448,16 @@ document.addEventListener('visibilitychange', () => {
 window.addEventListener('pagehide', () => music.persist());
 
 const UNLOCK_EVENTS = ['pointerdown', 'pointerup', 'touchend', 'click', 'keydown'];
+
+/**
+ * 🔓 Libera os listeners de unlock.
+ * @returns {void}
+ */
 const releaseUnlock = () => UNLOCK_EVENTS.forEach((type) => window.removeEventListener(type, unlockAudio, true));
 
 /**
  * 🔊 Desbloqueia o áudio.
+ * @returns {void}
  */
 function unlockAudio() {
   music.sync();
@@ -2192,6 +2482,7 @@ audio.context?.addEventListener('statechange', () => {
 
 /**
  * 🔄 Volta ao estado inicial.
+ * @returns {void}
  */
 function resetToIdle() {
   game.state = 'idle';
@@ -2199,6 +2490,10 @@ function resetToIdle() {
   showMenu('idle');
 }
 
+/**
+ * 📐 Reajusta escala e layout.
+ * @returns {void}
+ */
 const refit = () => {
   applyScale();
   if (layout()) resetToIdle();
@@ -2210,6 +2505,7 @@ if ('ResizeObserver' in window) new ResizeObserver(refit).observe(ui.stage);
 
 /**
  * 🔇 Alterna o som.
+ * @returns {void}
  */
 function toggleSound() {
   settings.sound = settings.sound ? 0 : 1;
@@ -2220,6 +2516,7 @@ function toggleSound() {
 
 /**
  * 🎨 Aplica as configurações gráficas.
+ * @returns {void}
  */
 function applyGraphics() {
   layout();
@@ -2229,6 +2526,7 @@ function applyGraphics() {
 
 /**
  * ⚙️ Sincroniza a UI com as configurações atuais.
+ * @returns {void}
  */
 function syncSettings() {
   document.documentElement.classList.toggle('basic', !hasEffects());
@@ -2333,6 +2631,11 @@ const VERSION_PATTERN = /const\s+CACHE\s*=\s*['"]([^'"]+)['"]/;
 const VERSION_CHECK_MS = 5 * 60 * 1000;
 const release = { current: null, latest: null, busy: false };
 
+/**
+ * 🏷️ Formata o nome da versão para exibição.
+ * @param {string} name
+ * @returns {string}
+ */
 const formatVersion = (name) => (name.startsWith(CACHE_PREFIX) ? name.slice(CACHE_PREFIX.length) : name);
 
 /**
@@ -2365,6 +2668,7 @@ async function fetchLatestVersion() {
 
 /**
  * 🖨️ Renderiza o status da versão na UI.
+ * @returns {void}
  */
 function renderVersion() {
   const shown = release.current ?? release.latest;
@@ -2379,6 +2683,7 @@ function renderVersion() {
 
 /**
  * 🔄 Verifica se há atualizações disponíveis.
+ * @returns {Promise<void>}
  */
 async function checkVersion() {
   if (release.busy) return;
@@ -2393,6 +2698,7 @@ async function checkVersion() {
 
 /**
  * ⬇️ Aplica a atualização do jogo.
+ * @returns {Promise<void>}
  */
 async function applyUpdate() {
   if (release.busy) return;
