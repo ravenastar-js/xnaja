@@ -28,7 +28,15 @@
 
 <div align="center">
 
-https://github.com/user-attachments/assets/ca87249a-8e73-410b-a4ae-99aa9405258f
+<div align="center">
+
+<details>
+  <summary><img src="https://api.iconify.design/mdi/movie-open.svg?color=%236effa8" width="20" height="20" style="vertical-align: middle;" /> Clique para assistir à demonstração</summary>
+  <br>
+  
+  https://github.com/user-attachments/assets/ca87249a-8e73-410b-a4ae-99aa9405258f
+
+</details>
 
 </div>
 
