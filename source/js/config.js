@@ -20,7 +20,42 @@ const COLORS = {
   heartGlow: 'rgba(255, 93, 122, 0.75)',
   obstacle: '#3a3d47',
   obstacleEdge: '#6b707e',
-  obstacleInner: '#2a2c34'
+  obstacleInner: '#2a2c34',
+  mouth: '#3a0f1d',
+  tongue: '#ff7a9a',
+  blush: '255, 122, 154'
+};
+
+/**
+ * 👅 Parâmetros da animação da língua bifurcada da cobra.
+ * @type {Object}
+ */
+const TONGUE = {
+  range: 3.4,
+  lateral: 0.7,
+  mouthOffset: 0.3,
+  width: 0.085,
+  fork: 0.2,
+  forkWidth: 0.05,
+  spread: 0.5,
+  grab: 0.7,
+  flick: 0.35,
+  flickMs: 55,
+  wiggle: 0.08,
+  wiggleMs: 70,
+  overshoot: 1.12,
+  pull: 0.55,
+  puff: 1.2,
+  shootMs: 200,
+  pullMs: 260,
+  retractMs: 150,
+  snapMs: 130,
+  puffMs: 520,
+  shootEasing: 'easeOutBack',
+  pullEasing: 'easeInOutSine',
+  retractEasing: 'easeInCubic',
+  snapEasing: 'easeInBack',
+  puffEasing: 'easeOutElastic(1, .55)'
 };
 
 /**

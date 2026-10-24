@@ -459,6 +459,18 @@ const game = {
 };
 
 const lerp = (from, to, t) => from + (to - from) * t;
+
+/**
+ * 👅 Estado animado da língua da cobra.
+ * @type {{reach: number, pull: number, target: number, x: number, y: number}}
+ */
+const tongue = { reach: 0, pull: 0, target: 0, x: 0, y: 0 };
+
+/**
+ * 🎈 Estado animado do inchaço da cabeça ao mastigar.
+ * @type {{scale: number}}
+ */
+const puff = { scale: 1 };
 const wrapHue = (hue) => ((hue % 360) + 360) % 360;
 const hsl = (hue, saturation, lightness) => `hsl(${Math.round(wrapHue(hue))} ${saturation}% ${lightness}%)`;
 
@@ -1179,6 +1191,7 @@ function resetGame() {
   game.banner = null;
   game.rings = [];
   game.embers = [];
+  resetTongue();
   applyTheme();
   setScore(0);
   syncLives();
@@ -1218,9 +1231,90 @@ function spawnBurst(target, color = COLORS.star, count = 12, force = 1) {
 }
 
 /**
+ * ⭐ Calcula o centro exibido da estrela, já puxado pela língua.
+ * @param {Object} head - Cabeça.
+ * @returns {{x: number, y: number}} Centro da estrela.
+ */
+function starCenter(head) {
+  const { cell } = game;
+  const x = game.star.x * cell + cell / 2;
+  const y = game.star.y * cell + cell / 2;
+  return { x: lerp(x, head.x, tongue.pull), y: lerp(y, head.y, tongue.pull) };
+}
+
+/**
+ * 🎯 Verifica se a estrela está ao alcance da língua e registra o alvo.
+ * @param {Object} head - Cabeça.
+ * @returns {boolean} Se a língua deve disparar.
+ */
+function aimTongue(head) {
+  if (!game.star) return false;
+  const { cell, dir } = game;
+  const dx = game.star.x * cell + cell / 2 - head.x;
+  const dy = game.star.y * cell + cell / 2 - head.y;
+  const forward = dx * dir.x + dy * dir.y;
+  const lateral = Math.abs(dx * dir.y - dy * dir.x);
+  if (forward <= 0 || forward >= cell * TONGUE.range || lateral >= cell * TONGUE.lateral) return false;
+  Object.assign(tongue, starCenter(head));
+  return true;
+}
+
+/**
+ * 👅 Dispara ou recolhe a língua.
+ * @param {number} target - Estado desejado (1 dispara, 0 recolhe).
+ */
+function setTongue(target) {
+  if (tongue.target === target) return;
+  tongue.target = target;
+  if (reduceMotion || !window.anime) {
+    tongue.reach = target;
+    tongue.pull = 0;
+    return;
+  }
+  anime.remove(tongue);
+  if (!target) {
+    anime({ targets: tongue, reach: 0, pull: 0, duration: TONGUE.retractMs, easing: TONGUE.retractEasing });
+    return;
+  }
+  anime
+    .timeline()
+    .add({ targets: tongue, reach: 1, duration: TONGUE.shootMs, easing: TONGUE.shootEasing })
+    .add({ targets: tongue, pull: TONGUE.pull, duration: TONGUE.pullMs, easing: TONGUE.pullEasing });
+}
+
+/**
+ * 🔄 Reinicia as animações da língua e da cabeça.
+ */
+function resetTongue() {
+  if (window.anime) {
+    anime.remove(tongue);
+    anime.remove(puff);
+  }
+  Object.assign(tongue, { reach: 0, pull: 0, target: 0 });
+  puff.scale = 1;
+}
+
+/**
+ * 😋 Recolhe a língua com um estalo e infla a cabeça.
+ */
+function chomp() {
+  tongue.target = 0;
+  tongue.pull = 0;
+  if (reduceMotion || !window.anime) {
+    tongue.reach = 0;
+    return;
+  }
+  anime.remove(tongue);
+  anime.remove(puff);
+  anime({ targets: tongue, reach: 0, duration: TONGUE.snapMs, easing: TONGUE.snapEasing });
+  anime({ targets: puff, scale: [TONGUE.puff, 1], duration: TONGUE.puffMs, easing: TONGUE.puffEasing });
+}
+
+/**
  * ⭐ Ação de comer a estrela.
  */
 function eatStar() {
+  chomp();
   spawnBurst(game.star);
   spawnRing(game.star.x * game.cell + game.cell / 2, game.star.y * game.cell + game.cell / 2, COLORS.star, game.cell * 2.2);
   setScore(game.score + 1);
@@ -1571,14 +1665,16 @@ function drawDots(head) {
 /**
  * ⭐ Desenha a estrela.
  * @param {number} now - Timestamp.
+ * @param {Object} head - Cabeça da cobra.
  */
-function drawStar(now) {
+function drawStar(now, head) {
   if (!game.star) return;
   const { cell } = game;
-  const cx = game.star.x * cell + cell / 2;
-  const cy = game.star.y * cell + cell / 2;
-  const radius = cell * 0.34 * (1 + Math.sin(now / Math.max(110, 220 - game.level * 12)) * (0.08 + game.glow * 0.06));
-  const rotation = Math.sin(now / 600) * 0.2;
+  const { x: cx, y: cy } = starCenter(head);
+  const grip = clamp(tongue.pull / TONGUE.pull, 0, 1);
+  const pulse = 1 + Math.sin(now / Math.max(110, 220 - game.level * 12)) * (0.08 + game.glow * 0.06);
+  const radius = cell * 0.34 * pulse * (1 - grip * 0.3);
+  const rotation = Math.sin(now / 600) * 0.2 + Math.sin(now / 45) * grip * 0.3;
 
   ctx.beginPath();
   for (let i = 0; i < 10; i++) {
@@ -1655,7 +1751,7 @@ function drawSnake(points, dead, now) {
       ctx.strokeStyle = ctx.fillStyle;
     }
     ctx.beginPath();
-    addCircle(points[i], cell * (0.46 - fade * 0.2));
+    addCircle(points[i], cell * (0.46 - fade * 0.2) * (i === 0 ? puff.scale : 1));
     ctx.fill();
 
     const next = points[i + 1];
@@ -1767,12 +1863,64 @@ function drawParticles(dt) {
 }
 
 /**
+ * 👅 Desenha a língua bifurcada e a boca da cobra.
+ * @param {Object} head - Cabeça.
+ * @param {number} now - Timestamp.
+ */
+function drawTongue(head, now) {
+  const reach = clamp(tongue.reach, 0, TONGUE.overshoot);
+  if (reach < 0.02) return;
+  const { cell, dir } = game;
+  const startX = head.x + dir.x * cell * TONGUE.mouthOffset;
+  const startY = head.y + dir.y * cell * TONGUE.mouthOffset;
+  const tipX = lerp(startX, tongue.x, reach);
+  const tipY = lerp(startY, tongue.y, reach);
+  const grip = clamp(tongue.pull / TONGUE.pull, 0, 1);
+  const sway = Math.sin(now / TONGUE.wiggleMs) * cell * TONGUE.wiggle * Math.min(reach, 1) * (1 - grip * 0.8);
+  const bendX = (startX + tipX) / 2 - dir.y * sway;
+  const bendY = (startY + tipY) / 2 + dir.x * sway;
+  const heading = Math.atan2(tipY - bendY, tipX - bendX);
+  const flick = 1 + Math.sin(now / TONGUE.flickMs) * TONGUE.flick * (1 - grip);
+  const spread = TONGUE.spread * flick * (1 + grip * TONGUE.grab);
+  const length = cell * TONGUE.fork * Math.min(reach, 1);
+
+  ctx.fillStyle = COLORS.mouth;
+  ctx.beginPath();
+  ctx.ellipse(startX, startY, cell * 0.05, cell * 0.09 * Math.min(reach * 4, 1), Math.atan2(dir.y, dir.x), 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.strokeStyle = COLORS.tongue;
+  ctx.lineCap = 'round';
+  ctx.lineWidth = cell * TONGUE.width;
+  ctx.beginPath();
+  ctx.moveTo(startX, startY);
+  ctx.quadraticCurveTo(bendX, bendY, tipX, tipY);
+  ctx.stroke();
+
+  ctx.lineWidth = cell * TONGUE.forkWidth;
+  ctx.beginPath();
+  for (const sign of [-1, 1]) {
+    const angle = heading + sign * spread;
+    const curl = heading + sign * spread * 0.35;
+    ctx.moveTo(tipX, tipY);
+    ctx.quadraticCurveTo(
+      tipX + Math.cos(curl) * length * 0.65,
+      tipY + Math.sin(curl) * length * 0.65,
+      tipX + Math.cos(angle) * length,
+      tipY + Math.sin(angle) * length
+    );
+  }
+  ctx.stroke();
+}
+
+/**
  * 👀 Desenha os olhos da cobra.
  * @param {Object} head - Cabeça.
  * @param {boolean} dead - Se está morta.
  */
 function drawEyes(head, dead) {
   const { cell, dir } = game;
+  const excite = dead ? 0 : clamp(tongue.reach, 0, 1);
   const side = { x: -dir.y, y: dir.x };
   const reach = cell * 0.14;
 
@@ -1791,16 +1939,32 @@ function drawEyes(head, dead) {
       ctx.moveTo(x + arm, y - arm);
       ctx.lineTo(x - arm, y + arm);
       ctx.stroke();
-    } else {
-      ctx.fillStyle = COLORS.eye;
+      continue;
+    }
+
+    if (excite > 0.05 && hasEffects()) {
+      ctx.fillStyle = `rgba(${COLORS.blush}, ${0.4 * excite})`;
       ctx.beginPath();
-      ctx.arc(x, y, cell * 0.08, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
-      ctx.beginPath();
-      ctx.arc(x - cell * 0.025, y - cell * 0.025, cell * 0.022, 0, Math.PI * 2);
+      ctx.ellipse(
+        head.x - dir.x * cell * 0.04 + side.x * sign * cell * 0.3,
+        head.y - dir.y * cell * 0.04 + side.y * sign * cell * 0.3,
+        cell * 0.07,
+        cell * 0.045,
+        Math.atan2(dir.y, dir.x),
+        0,
+        Math.PI * 2
+      );
       ctx.fill();
     }
+
+    ctx.fillStyle = COLORS.eye;
+    ctx.beginPath();
+    ctx.arc(x, y, cell * 0.08 * (1 + excite * 0.3), 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
+    ctx.beginPath();
+    ctx.arc(x - cell * 0.025, y - cell * 0.025, cell * 0.022 * (1 + excite * 0.5), 0, Math.PI * 2);
+    ctx.fill();
   }
 }
 
@@ -1952,9 +2116,11 @@ function render(now, dt) {
   drawDots(points[0]);
   drawEmbers(now, dt);
   drawObstacles();
-  drawStar(now);
+  setTongue(!dead && aimTongue(points[0]) ? 1 : 0);
+  drawStar(now, points[0]);
   drawHeart(now);
   const head = drawSnake(points, dead, now);
+  drawTongue(head, now);
   drawEyes(head, dead);
   emitTrail(points);
   drawParticles(dt);
