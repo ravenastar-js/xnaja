@@ -40,13 +40,13 @@ const THEMES = [
  * 🗄️ Chaves de armazenamento local (localStorage/sessionStorage).
  * @type {Object}
  */
-const STORAGE_KEYS = { settings: 'cobrinha:settings', history: 'cobrinha:history', music: 'cobrinha:music', tracks: 'cobrinha:tracks' };
+const STORAGE_KEYS = { settings: 'cobrinha:settings', history: 'cobrinha:history', music: 'cobrinha:music', tracks: 'cobrinha:tracks', gamepad: 'cobrinha:gamepad' };
 
 /**
  * 🛠️ Configurações padrão iniciais.
  * @type {Object}
  */
-const DEFAULT_SETTINGS = { sens: 18, speed: 200, sound: 1, music: 1, volume: 100, obstacles: 0, walls: 0, control: 0, graphics: 1, glow: 1 };
+const DEFAULT_SETTINGS = { sens: 18, speed: 200, sound: 1, music: 1, volume: 100, obstacles: 0, walls: 0, control: 0, graphics: 1, glow: 1, gamepad: 1 };
 
 /**
  * 📐 Dimensões e restrições de layout do tabuleiro.
@@ -235,7 +235,7 @@ const MODE_LABELS = {
  * ⚠️ Valores que indicam configurações desligadas.
  * @type {Object}
  */
-const OFF_VALUES = { sound: 0, glow: 0, obstacles: 0 };
+const OFF_VALUES = { sound: 0, glow: 0, obstacles: 0, gamepad: 0 };
 
 /**
  * 🖥️ Modo de tela imersiva.
@@ -280,6 +280,36 @@ const DIRECTION_KEYS = {
   s: { x: 0, y: 1 },
   a: { x: -1, y: 0 },
   d: { x: 1, y: 0 }
+};
+
+const JOYSTICK = { deadzone: 0.5, snap: 0.9, axisLimit: 1.05, hatTolerance: 0.1, learnMs: 8000 };
+
+const padButton = (index) => ({ type: 'button', index });
+const padAxis = (index, value) => ({ type: 'axis', index, value });
+
+const JOYSTICK_ACTIONS = {
+  up: ['fa-arrow-up', 'Cima'],
+  down: ['fa-arrow-down', 'Baixo'],
+  left: ['fa-arrow-left', 'Esquerda'],
+  right: ['fa-arrow-right', 'Direita'],
+  pause: ['fa-pause', 'Pausar'],
+  confirm: ['fa-play', 'Confirmar']
+};
+
+const JOYSTICK_DIRECTIONS = {
+  up: { x: 0, y: -1 },
+  down: { x: 0, y: 1 },
+  left: { x: -1, y: 0 },
+  right: { x: 1, y: 0 }
+};
+
+const JOYSTICK_DEFAULTS = {
+  up: [padButton(12), padAxis(1, -1), padAxis(9, -1)],
+  down: [padButton(13), padAxis(1, 1), padAxis(9, 0.14)],
+  left: [padButton(14), padAxis(0, -1), padAxis(9, 0.71)],
+  right: [padButton(15), padAxis(0, 1), padAxis(9, -0.43)],
+  pause: [padButton(9)],
+  confirm: [padButton(0)]
 };
 
 /**
@@ -347,6 +377,12 @@ const guideData = {
           title: "Teclado",
           text: "Use as setas ou as teclas de letras para virar.",
           keys: ["Setas", "W A S D"]
+        },
+        {
+          icon: "fa-gamepad",
+          title: "Joystick",
+          text: "Conecte um controle USB ou Bluetooth e aperte qualquer botão. O direcional ou a alavanca viram, Start pausa e A confirma. Em Mais ajustes dá para mapear os botões.",
+          keys: ["Direcional", "Start", "A"]
         },
         {
           icon: "fa-pause",

@@ -2206,3 +2206,87 @@ body.compact .lives {
     transition: none;
   }
 }
+
+.joystick-status,
+.joystick-hint {
+  display: block;
+  margin: 0;
+  overflow: hidden;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.joystick-hint {
+  white-space: normal;
+}
+
+.joystick-status i {
+  margin-right: 8px;
+}
+
+.joystick-status.on {
+  color: var(--text);
+}
+
+.joystick-status.on i {
+  color: var(--snake);
+}
+
+.joystick-map {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.joystick-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.joystick-action {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+}
+
+.joystick-action i {
+  width: 20px;
+  text-align: center;
+  color: var(--snake);
+}
+
+.joystick-bind {
+  min-width: 120px;
+  font-size: 14px;
+}
+
+.joystick-bind:disabled {
+  opacity: 0.45;
+}
+
+.joystick-bind.listening {
+  color: var(--snake);
+  box-shadow: 0 0 0 1px rgba(var(--snake-rgb), 0.7), 0 0 14px rgba(var(--snake-rgb), 0.4);
+  animation: joystickPulse 1s ease-in-out infinite;
+}
+
+@keyframes joystickPulse {
+  50% {
+    opacity: 0.6;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .joystick-bind.listening {
+    animation: none;
+  }
+}

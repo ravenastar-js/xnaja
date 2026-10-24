@@ -1,4 +1,4 @@
-const CACHE = 'xnaja-v7.0';
+const CACHE = 'xnaja-v7.1';
 const PAGE = './';
 const ASSETS = [
   PAGE,
@@ -9,7 +9,8 @@ const ASSETS = [
   'source/assets/apple-touch-icon.png',
   'source/css/style.css',
   'source/js/config.js',
-  'source/js/app.js'
+  'source/js/app.js',
+  'source/js/gamepad.js'
 ];
 
 self.addEventListener('install', (event) => {

@@ -381,6 +381,27 @@
         <button type="button" data-value="0"><i class="fa-regular fa-sun" aria-hidden="true"></i>Desativado</button>
       </div>
     </div>
+    <div class="row">
+      <span><i class="fa-solid fa-gamepad" aria-hidden="true"></i>Joystick</span>
+      <div class="segmented" data-setting="gamepad">
+        <button type="button" data-value="1"><i class="fa-solid fa-plug" aria-hidden="true"></i>Ligado</button>
+        <button type="button" data-value="0"><i class="fa-solid fa-ban" aria-hidden="true"></i>Desligado</button>
+      </div>
+      <p class="joystick-status" id="joystickStatus"></p>
+      <button class="action-button" id="joystickOpen" type="button"><i class="fa-solid fa-sliders" aria-hidden="true"></i><span>Mapear botões</span></button>
+    </div>
+  </div>
+</dialog>
+
+<dialog class="dialog" id="joystickDialog" aria-labelledby="joystickTitle">
+  <div class="dialog-header">
+    <h2 id="joystickTitle"><i class="fa-solid fa-gamepad" aria-hidden="true"></i>Joystick</h2>
+    <button class="pill" id="joystickClose" type="button"><i class="fa-solid fa-xmark" aria-hidden="true"></i><span>Fechar</span></button>
+  </div>
+  <div class="dialog-body">
+    <p class="joystick-hint" id="joystickHint"></p>
+    <ul class="joystick-map" id="joystickMap"></ul>
+    <button class="pill danger" id="joystickReset" type="button"><i class="fa-solid fa-rotate-left" aria-hidden="true"></i>Restaurar padrão</button>
   </div>
 </dialog>
 
@@ -388,5 +409,6 @@
 <script src="source/js/config.js" defer></script>
 <script src="source/js/icons.js" defer></script>
 <script src="source/js/app.js" defer></script>
+<script src="source/js/gamepad.js" defer></script>
 </body>
 </html>

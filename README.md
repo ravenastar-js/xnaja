@@ -47,7 +47,7 @@
   Visão Geral
 </h2>
 
-O **XNAJA** é um jogo da cobrinha (Snake) moderno, online e gratuito. Desenvolvido com tecnologias web nativas (HTML5, CSS3 e JavaScript puro), ele oferece uma experiência fluida e responsiva tanto em dispositivos móveis quanto em desktops.
+O **XNAJA** é um jogo da cobrinha (Snake) moderno, online e gratuito. Desenvolvido com tecnologias web nativas (HTML5, CSS3 e JavaScript puro), ele oferece uma experiência fluida e responsiva tanto em dispositivos móveis quanto em desktops, com suporte a toque, teclado e joystick.
 
 O objetivo é simples: guie a cobrinha, **devore o máximo de estrelinhas que puder** e evite bater no próprio corpo, nos obstáculos ou nas bordas (se configuradas como sólidas).
 
@@ -112,12 +112,28 @@ Acesse: [https://ravenastar.com/xnaja/](https://ravenastar.com/xnaja/), [https:/
   Controles
 </h2>
 
-| Ação | Teclado | Mobile |
-| :--- | :--- | :--- |
-| **Mover** | <kbd>↑</kbd> <kbd>↓</kbd> <kbd>←</kbd> <kbd>→</kbd> ou <kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd> | Arraste o dedo ou use o D-pad |
-| **Pausar** | <kbd>Espaço</kbd>, <kbd>P</kbd> ou <kbd>Esc</kbd> | Toque no botão "Pausar" |
-| **Som** | <kbd>M</kbd> | Toque no ícone de volume |
-| **Jogar** | <kbd>Enter</kbd> | Toque em "Jogar" |
+| Ação | Teclado | Joystick | Mobile |
+| :--- | :--- | :--- | :--- |
+| **Mover** | <kbd>↑</kbd> <kbd>↓</kbd> <kbd>←</kbd> <kbd>→</kbd> ou <kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd> | Direcional ou alavanca | Arraste o dedo ou use o D-pad |
+| **Pausar** | <kbd>Espaço</kbd>, <kbd>P</kbd> ou <kbd>Esc</kbd> | <kbd>Start</kbd> | Toque no botão "Pausar" |
+| **Som** | <kbd>M</kbd> | - | Toque no ícone de volume |
+| **Jogar** | <kbd>Enter</kbd> | <kbd>A</kbd> | Toque em "Jogar" |
+
+<h3>
+  <img src="https://api.iconify.design/mdi/controller.svg?color=%236effa8" width="22" height="22" style="vertical-align: middle;" />
+  Joystick no PC
+</h3>
+
+O XNAJA reconhece joysticks e gamepads USB ou Bluetooth por meio da Gamepad API do navegador, incluindo modelos genéricos de PC e arcade sticks.
+
+1. Conecte o controle e aperte qualquer botão. O navegador só o revela depois disso.
+2. Confira a detecção em **Mais ajustes → Joystick**, onde também dá para ligar ou desligar o suporte.
+3. Se algum botão não responder como esperado, abra **Mapear botões**, escolha a ação (Cima, Baixo, Esquerda, Direita, Pausar ou Confirmar) e aperte o botão ou mova a alavanca desejada.
+
+> [!TIP]
+> O mapeamento é salvo por modelo de controle, e **Restaurar padrão** desfaz as alterações. Se o controle for desconectado durante a partida, o jogo pausa automaticamente.
+
+Compatível com direcional em botões, alavanca analógica (eixos 0 e 1) e direcional em eixo (hat), formato comum em joysticks genéricos.
 
 ---
 
@@ -127,6 +143,7 @@ Acesse: [https://ravenastar.com/xnaja/](https://ravenastar.com/xnaja/), [https:/
 </h2>
 
 - <img src="https://api.iconify.design/mdi/gamepad-variant.svg?color=%236effa8" width="20" height="20" style="vertical-align: middle;" /> **Controles Adaptáveis:** Sistema de arrasto suave para mobile e teclado preciso para desktop.
+- <img src="https://api.iconify.design/mdi/controller.svg?color=%236effa8" width="20" height="20" style="vertical-align: middle;" /> **Suporte a Joystick:** Jogue com gamepads e joysticks USB ou Bluetooth, com menu para mapear os botões.
 - <img src="https://api.iconify.design/mdi/palette.svg?color=%236effa8" width="20" height="20" style="vertical-align: middle;" /> **Temas Dinâmicos:** A paleta de cores do jogo inteiro muda conforme você sobe de nível.
 - <img src="https://api.iconify.design/mdi/star.svg?color=%236effa8" width="20" height="20" style="vertical-align: middle;" /> **Sistema de Níveis:** A cada 5 estrelas, você sobe de nível e a velocidade da cobra aumenta.
 - <img src="https://api.iconify.design/mdi/cube.svg?color=%236effa8" width="20" height="20" style="vertical-align: middle;" /> **Obstáculos:** Desafie-se com blocos no tabuleiro (configurável: Nenhum, Poucos ou Muitos).

@@ -2123,7 +2123,7 @@ function handleActionKey(key) {
 }
 
 window.addEventListener('keydown', (event) => {
-  if (event.ctrlKey || event.metaKey || event.altKey || ui.settingsDialog.open || ui.guideDialog.open) return;
+  if (event.ctrlKey || event.metaKey || event.altKey || document.querySelector('dialog[open]')) return;
   const key = event.key.toLowerCase();
   if (event.target === ui.updateButton && (key === 'enter' || key === ' ')) return;
 
